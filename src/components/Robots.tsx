@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { ROBOTS, SIGNAL_POOL, type Robot, type Side } from "../lib/data";
+import { useCart } from "../lib/cart";
+import { productFromRobot, ROBOTS, SIGNAL_POOL, type Robot, type Side } from "../lib/data";
 import { faTime } from "../lib/format";
 import { Reveal, SectionHead, useInView, usePrefersReducedMotion } from "../lib/motion";
-import { RobotMicrobot, RobotOrobat, RobotYuz } from "./icons";
+import { IconCart, RobotMicrobot, RobotOrobat, RobotYuz } from "./icons";
 
 const AVATARS: Record<string, (p: { className?: string }) => React.ReactElement> = {
   orobat: RobotOrobat,
@@ -32,6 +33,7 @@ function WinBar({ value, accent, start }: { value: number; accent: string; start
 
 function RobotCard({ robot, index }: { robot: Robot; index: number }) {
   const [ref, inView] = useInView<HTMLDivElement>();
+  const { addToCart, openPurchase } = useCart();
   const Avatar = AVATARS[robot.id];
   return (
     <Reveal delay={index * 120}>
@@ -110,11 +112,28 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
             <span className="mr-auto text-[11.5px] text-mist/80">آخرین سیگنال: {robot.lastSignal}</span>
           </div>
 
+          <div className="mt-5 flex items-center justify-between rounded-2xl border border-white/12 bg-abyss/45 px-4 py-3">
+            <div>
+              <p className="text-[11px] text-mist">اشتراک ماهانه</p>
+              <p className="font-display text-[24px] leading-tight text-fog">
+                {robot.priceLabel}
+                <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">تومان</span>
+              </p>
+            </div>
+            <button
+              onClick={() => addToCart(productFromRobot(robot))}
+              aria-label={`افزودن ${robot.name} به سبد خرید`}
+              className="flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+              style={{ color: robot.accent, background: `${robot.accent}16`, border: `1px solid ${robot.accent}59` }}
+            >
+              <IconCart className="h-5 w-5" />
+            </button>
+          </div>
           <button
-            className="mt-5 w-full rounded-xl py-3 text-[14px] font-extrabold text-abyss transition-all duration-300 hover:brightness-110 active:scale-[0.97]"
-            style={{ background: robot.accent }}
+            onClick={() => openPurchase(productFromRobot(robot))}
+            className="shine mt-3 w-full rounded-xl bg-fog py-3 text-[14px] font-extrabold text-ink shadow-[0_12px_35px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
           >
-            فعال‌سازی {robot.name}
+            خرید اشتراک {robot.name}
           </button>
         </div>
       </div>

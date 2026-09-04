@@ -1,11 +1,13 @@
 export type Side = "buy" | "sell";
 
-export const NAV_LINKS = [
-  { id: "platforms", label: "پلتفرم‌ها" },
-  { id: "robots", label: "ربات‌های سیگنال" },
-  { id: "academy", label: "آکادمی" },
-  { id: "plans", label: "اشتراک" },
-] as const;
+/* منوهای هدر — لینک‌ها بعدا جایگذاری می‌شوند */
+export const NAV_ITEMS: { label: string; href: string }[] = [
+  { label: "سایت", href: "#" },
+  { label: "دانلود", href: "#" },
+  { label: "تقویم", href: "#" },
+  { label: "بلاگ", href: "#" },
+  { label: "مقالات", href: "#" },
+];
 
 export const TICKER_ITEMS: { pair: string; price: string; change: number }[] = [
   { pair: "انس طلا XAUUSD", price: "۲٬۳۸۴٫۵۰", change: 0.42 },
@@ -96,6 +98,8 @@ export type Robot = {
   timeframe: string;
   tag: string;
   lastSignal: string;
+  priceLabel: string;
+  priceNum: number;
 };
 
 export const ROBOTS: Robot[] = [
@@ -111,6 +115,8 @@ export const ROBOTS: Robot[] = [
     timeframe: "تایم‌فریم ۴ ساعته",
     tag: "کم‌ریسک",
     lastSignal: "۴ دقیقه پیش",
+    priceLabel: "۴۵۰٬۰۰۰",
+    priceNum: 450000,
   },
   {
     id: "microbot",
@@ -124,12 +130,14 @@ export const ROBOTS: Robot[] = [
     timeframe: "تایم‌فریم ۵ دقیقه",
     tag: "پرتحرک",
     lastSignal: "همین حالا",
+    priceLabel: "۵۵۰٬۰۰۰",
+    priceNum: 550000,
   },
   {
     id: "yuz",
     name: "یوز",
     role: "شکارچی خبر",
-    desc: "مثل یوزپلنگ، در لحظه انتشار اخبار مهم اقتصادی وارد عمل می‌شود و جهش‌های لحظه‌ای بازار را به سود شما می‌چاپد.",
+    desc: "مثل یوزپلنگ، در لحظه انتشار اخبار مهم اقتصادی وارد عمل می‌شود و جهش‌های لحظه‌ای بازار را به سود شما ثبت می‌کند.",
     accent: "#5cb8de",
     winRate: 79,
     daily: "در زمان اخبار",
@@ -137,6 +145,8 @@ export const ROBOTS: Robot[] = [
     timeframe: "معاملات خبری",
     tag: "سرعتی",
     lastSignal: "۱۲ دقیقه پیش",
+    priceLabel: "۶۵۰٬۰۰۰",
+    priceNum: 650000,
   },
 ];
 
@@ -163,6 +173,9 @@ export type Course = {
   teacher: string;
   rating: string;
   pattern: "channel" | "doubletop" | "fib" | "flag" | "triangle" | "steps";
+  desc: string;
+  priceLabel: string;
+  priceNum: number;
   featured?: boolean;
 };
 
@@ -177,6 +190,9 @@ export const COURSES: Course[] = [
     teacher: "سارا محمدی",
     rating: "۴٫۹",
     pattern: "channel",
+    desc: "مسیر کامل ورود به بازارهای مالی؛ از شناخت کندل‌ها و ساختار بازار تا افتتاح حساب، مدیریت ریسک و انجام اولین معامله واقعی — با تمرین‌های عملی روی چارت زنده.",
+    priceLabel: "۳۹۰٬۰۰۰",
+    priceNum: 390000,
     featured: true,
   },
   {
@@ -189,6 +205,9 @@ export const COURSES: Course[] = [
     teacher: "امیر تهرانی",
     rating: "۴٫۸",
     pattern: "doubletop",
+    desc: "سبک پیشرفته RTM برای خواندن ردپای پول هوشمند؛ ناحیه‌های عرضه و تقاضا، نقدینگی و ستاپ‌های ورود دقیق با مثال‌های واقعی از طلا و فارکس.",
+    priceLabel: "۴۵۰٬۰۰۰",
+    priceNum: 450000,
   },
   {
     id: "c3",
@@ -200,6 +219,9 @@ export const COURSES: Course[] = [
     teacher: "نگار کیان",
     rating: "۴٫۹",
     pattern: "fib",
+    desc: "مهم‌ترین مهارت بقا در بازار؛ محاسبه حجم پوزیشن، ریسک به ریوارد استاندارد و ساخت یک سیستم مدیریت سرمایه شخصی‌سازی‌شده.",
+    priceLabel: "۲۹۰٬۰۰۰",
+    priceNum: 290000,
   },
   {
     id: "c4",
@@ -211,6 +233,9 @@ export const COURSES: Course[] = [
     teacher: "دکتر رامین شریف",
     rating: "۴٫۷",
     pattern: "steps",
+    desc: "کنترل ترس و طمع، ساخت ژورنال معاملاتی و روتین ذهنی معامله‌گران حرفه‌ای؛ با تمرین‌های عملی بعد از هر جلسه.",
+    priceLabel: "۲۵۰٬۰۰۰",
+    priceNum: 250000,
   },
   {
     id: "c5",
@@ -222,6 +247,9 @@ export const COURSES: Course[] = [
     teacher: "لیلا احمدی",
     rating: "۴٫۶",
     pattern: "triangle",
+    desc: "تحلیل رویدادهای کلان، تقویم اقتصادی و معامله حرفه‌ای در زمان اخبار؛ از NFP تا تصمیم‌های نرخ بهره.",
+    priceLabel: "۳۲۰٬۰۰۰",
+    priceNum: 320000,
   },
   {
     id: "c6",
@@ -233,15 +261,19 @@ export const COURSES: Course[] = [
     teacher: "امیر تهرانی",
     rating: "۴٫۸",
     pattern: "flag",
+    desc: "اتصال ربات‌های اُروبات، میکوبات و یوز به حساب معاملاتی، تنظیم فیلترهای شخصی و ساخت استراتژی نیمه‌خودکار.",
+    priceLabel: "۳۶۰٬۰۰۰",
+    priceNum: 360000,
   },
 ];
 
 export const PLANS = {
   monthly: {
     name: "اشتراک یک‌ماهه",
-    price: "۳۹۹٬۰۰۰",
-    unit: "تومان",
-    note: "برای شروع و ارزیابی کامل امکانات",
+    price: "۱٬۶۰۰٬۰۰۰",
+    unit: "تومان / ماه",
+    note: "دسترسی کامل ۳۰ روزه به تمام امکانات",
+    desc: "یک ماه دسترسی کامل و بدون محدودیت به تمام امکانات ایران افیکس؛ هر سه ربات سیگنال‌ده، کانال VIP، آکادمی و پشتیبانی اختصاصی. بدون تمدید خودکار — تمدید فقط با اختیار خود شما.",
     features: [
       "دسترسی به هر ۳ ربات سیگنال‌ده",
       "کانال VIP سیگنال‌های لحظه‌ای",
@@ -250,12 +282,14 @@ export const PLANS = {
       "به‌روزرسانی هفتگی استراتژی‌ها",
     ],
     cta: "شروع اشتراک ماهانه",
+    priceNum: 1600000,
   },
   lifetime: {
     name: "اشتراک دائمی",
     price: "رایگان",
     unit: "برای همیشه",
     note: "بدون پرداخت، بدون تمدید، بدون محدودیت زمانی",
+    desc: "به‌جای پرداخت ماهانه، فقط یک حساب معاملاتی از طریق ایران افیکس افتتاح کنید؛ تمام امکانات پرمیوم برای همیشه فعال می‌ماند. بدون تمدید، بدون هزینه پنهان، بدون محدودیت زمانی.",
     features: [
       "تمام امکانات پلن ماهانه",
       "وبینار ماهانه استراتژی با اساتید",
@@ -265,6 +299,7 @@ export const PLANS = {
     ],
     cta: "دریافت اشتراک دائمی رایگان",
     condition: "با افتتاح و شارژ حساب معاملاتی از طریق ایران افیکس، به‌صورت خودکار فعال می‌شود.",
+    priceNum: 0,
   },
 };
 
@@ -281,3 +316,156 @@ export const DOWNLOAD_PERKS = [
   "ورود امن با اثر انگشت و چهره",
   "حالت تاریک کامل، هم‌رنگ چشم معامله‌گر",
 ];
+
+/* ---------- فوتر ---------- */
+export const FOOTER_PLATFORM_LINKS = [
+  { label: "گلد افیکس — طلا", href: "#platforms" },
+  { label: "کوین افیکس — رمزارز", href: "#platforms" },
+  { label: "دلتا افیکس — فارکس", href: "#platforms" },
+  { label: "مقایسه پلتفرم‌ها", href: "#platforms" },
+];
+
+export const FOOTER_QUICK_LINKS = [
+  { label: "ربات‌های سیگنال", href: "#robots" },
+  { label: "آکادمی آموزشی", href: "#academy" },
+  { label: "تعرفه اشتراک", href: "#plans" },
+  { label: "دانلود اپلیکیشن", href: "#" },
+];
+
+export const FOOTER_EXTRA_COLS: { title: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: "دسته‌بندی‌ها",
+    links: [
+      { label: "دانلود اپلیکیشن", href: "#" },
+      { label: "اخبار", href: "#" },
+      { label: "تقویم اقتصادی", href: "#" },
+      { label: "چارت تحلیل", href: "#" },
+      { label: "سیگنال و تحلیل", href: "#" },
+      { label: "فروشگاه", href: "#" },
+    ],
+  },
+  {
+    title: "دانلود اپلیکیشن",
+    links: [
+      { label: "دریافت از مایکت", href: "#" },
+      { label: "دریافت از آی‌اپس", href: "#" },
+      { label: "دریافت نسخه APK", href: "#" },
+      { label: "دریافت نسخه دسکتاپ", href: "#" },
+    ],
+  },
+  {
+    title: "ابزارها",
+    links: [
+      { label: "تبدیل جیسون", href: "#" },
+      { label: "تایید دامنه", href: "#" },
+      { label: "مقالات تخصصی", href: "#" },
+    ],
+  },
+  {
+    title: "پشتیبانی",
+    links: [
+      { label: "پشتیبانی", href: "#" },
+      { label: "ایمیل پشتیبانی", href: "#" },
+      { label: "همکاری با برترین ارائه‌دهندگان خدمات", href: "#" },
+    ],
+  },
+];
+
+export const COPYRIGHT =
+  "© ۱۴۰۴ - تمامی حقوق برای ایران افیکس محفوظ است. | طراحی و توسعه با عشق برای جامعه معامله‌گران ایران";
+
+/* ---------- محصولات (برای پنل خرید و سبد) ---------- */
+export type Product = {
+  id: string;
+  kind: "robot" | "course" | "plan";
+  kindLabel: string;
+  name: string;
+  accent: string;
+  desc: string;
+  features: string[];
+  meta: { label: string; value: string }[];
+  priceNum: number;
+  priceLabel: string;
+  unit: string;
+};
+
+export function productFromRobot(r: Robot): Product {
+  return {
+    id: `robot-${r.id}`,
+    kind: "robot",
+    kindLabel: "ربات سیگنال‌ده",
+    name: r.name,
+    accent: r.accent,
+    desc: r.desc,
+    features: [
+      `نرخ موفقیت ٪${r.winRate} در ۹۰ روز گذشته`,
+      `سیگنال روزانه: ${r.daily}`,
+      `سبک معاملاتی: ${r.timeframe}`,
+      "ارسال سیگنال به تلگرام و داخل اپلیکیشن",
+      "گارانتی بازگشت وجه تا ۷ روز",
+    ],
+    meta: [
+      { label: "نرخ موفقیت", value: `٪${r.winRate}` },
+      { label: "سیگنال روزانه", value: r.daily },
+      { label: "سبک", value: r.timeframe },
+      { label: "بازارها", value: r.markets.join("، ") },
+    ],
+    priceNum: r.priceNum,
+    priceLabel: r.priceLabel,
+    unit: "تومان / ماه",
+  };
+}
+
+export function productFromCourse(c: Course): Product {
+  return {
+    id: `course-${c.id}`,
+    kind: "course",
+    kindLabel: "دوره آموزشی",
+    name: c.title,
+    accent: c.levelColor,
+    desc: c.desc,
+    features: [
+      "دسترسی مادام‌العمر به ویدیوها",
+      "تمرین عملی روی چارت زنده",
+      "گواهینامه پایان دوره ایران افیکس",
+      "رفع اشکال هفتگی با مدرس",
+    ],
+    meta: [
+      { label: "سطح", value: c.level },
+      { label: "مدرس", value: c.teacher },
+      { label: "جلسات", value: c.sessions },
+      { label: "مدت", value: c.hours },
+    ],
+    priceNum: c.priceNum,
+    priceLabel: c.priceLabel,
+    unit: "تومان",
+  };
+}
+
+export function productFromPlan(key: "monthly" | "lifetime"): Product {
+  const p = PLANS[key];
+  return {
+    id: `plan-${key}`,
+    kind: "plan",
+    kindLabel: key === "monthly" ? "اشتراک ماهانه" : "اشتراک دائمی",
+    name: p.name,
+    accent: key === "monthly" ? "#3ecf9a" : "#e6b45a",
+    desc: p.desc,
+    features: p.features,
+    meta:
+      key === "monthly"
+        ? [
+            { label: "مدت اعتبار", value: "۳۰ روز" },
+            { label: "تمدید", value: "دستی و اختیاری" },
+            { label: "ضمانت", value: "بازگشت ۷ روزه" },
+          ]
+        : [
+            { label: "مدت اعتبار", value: "همیشگی" },
+            { label: "هزینه", value: "رایگان" },
+            { label: "فعال‌سازی", value: "با افتتاح حساب" },
+          ],
+    priceNum: p.priceNum,
+    priceLabel: p.price,
+    unit: p.unit,
+  };
+}

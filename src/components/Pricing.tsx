@@ -1,10 +1,12 @@
-import { PLANS } from "../lib/data";
+import { useCart } from "../lib/cart";
+import { PLANS, productFromPlan } from "../lib/data";
 import { Reveal, SectionHead } from "../lib/motion";
 import { IconCheck, IconShield } from "./icons";
 
 export default function Pricing() {
   const m = PLANS.monthly;
   const l = PLANS.lifetime;
+  const { openPurchase } = useCart();
 
   return (
     <section id="plans" className="relative scroll-mt-24 py-20 lg:py-28">
@@ -41,7 +43,10 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <button className="mt-auto w-full rounded-xl border border-white/18 py-3.5 pt-3.5 text-[15px] font-extrabold text-fog transition-all duration-300 hover:border-mint/60 hover:text-mint active:scale-[0.97] [margin-top:auto]">
+              <button
+                onClick={() => openPurchase(productFromPlan("monthly"))}
+                className="mt-auto w-full rounded-xl bg-fog py-3.5 text-[15px] font-extrabold text-ink shadow-[0_12px_35px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
+              >
                 {m.cta}
               </button>
               <p className="mt-4 text-center text-[12px] text-mist/80">لغو در هر زمان، بدون جریمه</p>
@@ -80,12 +85,12 @@ export default function Pricing() {
                   {l.condition}
                 </div>
 
-                <a
-                  href="#download"
-                  className="group mt-6 flex w-full items-center justify-center gap-2.5 rounded-xl bg-mint py-4 text-[15.5px] font-extrabold text-abyss shadow-[0_14px_40px_-10px_rgba(62,207,154,0.7)] transition-all duration-300 hover:brightness-110 active:scale-[0.97]"
+                <button
+                  onClick={() => openPurchase(productFromPlan("lifetime"))}
+                  className="shine group mt-6 flex w-full items-center justify-center gap-2.5 rounded-xl bg-fog py-4 text-[15.5px] font-extrabold text-ink shadow-[0_14px_40px_-10px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
                 >
                   {l.cta}
-                </a>
+                </button>
               </div>
             </div>
           </Reveal>

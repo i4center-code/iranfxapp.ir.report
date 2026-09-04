@@ -165,13 +165,12 @@ export default function Platforms() {
 
                     <div className="mt-6 flex items-center gap-3">
                       <button
-                        className="flex-1 rounded-xl px-4 py-3 text-[14px] font-bold text-abyss transition-all duration-300 hover:brightness-110 active:scale-[0.97]"
-                        style={{ background: p.accent }}
+                        className="shine flex-1 rounded-xl bg-fog px-4 py-3 text-[14px] font-extrabold text-ink shadow-[0_10px_30px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
                       >
                         ورود به {p.name}
                       </button>
                       <a
-                        href="#download"
+                        href="#"
                         className="group/link flex items-center gap-1.5 rounded-xl border border-white/12 px-4 py-3 text-[13px] font-medium text-mist transition-colors duration-300 hover:text-fog"
                       >
                         جزئیات

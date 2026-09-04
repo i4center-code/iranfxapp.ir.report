@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Courses from "./components/Courses";
-import DownloadCta from "./components/DownloadCta";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Nav from "./components/Nav";
 import Pricing from "./components/Pricing";
 import Robots from "./components/Robots";
+import Shop from "./components/Shop";
 import Ticker from "./components/Ticker";
 import { IconUp } from "./components/icons";
+import { CartProvider } from "./lib/cart";
 
 function BackToTop() {
   const [show, setShow] = useState(false);
@@ -20,7 +21,7 @@ function BackToTop() {
     <a
       href="#top"
       aria-label="بازگشت به بالا"
-      className={`fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-mint text-abyss shadow-[0_12px_35px_-8px_rgba(62,207,154,0.8)] transition-all duration-500 hover:-translate-y-1 hover:brightness-110 ${
+      className={`fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-fog text-ink shadow-[0_12px_35px_-8px_rgba(0,0,0,0.45)] transition-all duration-500 hover:-translate-y-1 hover:brightness-95 ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
       }`}
     >
@@ -31,6 +32,7 @@ function BackToTop() {
 
 export default function App() {
   return (
+    <CartProvider>
     <div className="relative min-h-screen overflow-x-clip bg-ink text-fog">
       {/* layered ambient background */}
       <div className="pointer-events-none fixed inset-0 z-0">
@@ -49,11 +51,12 @@ export default function App() {
           <Robots />
           <Courses />
           <Pricing />
-          <DownloadCta />
         </main>
         <Footer />
         <BackToTop />
+        <Shop />
       </div>
     </div>
+    </CartProvider>
   );
 }

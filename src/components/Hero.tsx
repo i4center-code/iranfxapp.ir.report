@@ -3,7 +3,7 @@ import { TRUST_POINTS } from "../lib/data";
 import { faNum, faPrice, toFa } from "../lib/format";
 import { MaskHeading, Reveal, useCountUp, useInView, usePrefersReducedMotion } from "../lib/motion";
 import { CandleChart, genCandles, type Candle } from "./charts";
-import { IconBolt, IconDownload, IconSignal, TrustIcon } from "./icons";
+import { IconBolt, IconSignal, TrustIcon } from "./icons";
 import Platforms from "./Platforms";
 
 const TABS = {
@@ -108,7 +108,7 @@ export default function Hero() {
                     معامله کنید
                     <svg
                       viewBox="0 0 320 20"
-                      className="absolute -bottom-3 right-1 h-4 w-[72%] text-pine sm:-bottom-4"
+                      className="absolute -bottom-3 right-1 h-4 w-[72%] text-foam sm:-bottom-4"
                       fill="none"
                       aria-hidden
                     >
@@ -135,11 +135,11 @@ export default function Hero() {
 
             <Reveal delay={350} className="mt-9 flex flex-wrap items-center gap-4">
               <a
-                href="#download"
-                className="group inline-flex items-center gap-2.5 rounded-full bg-mint px-7 py-3.5 text-[15px] font-extrabold text-abyss shadow-[0_10px_40px_-10px_rgba(62,207,154,0.65)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_50px_-10px_rgba(62,207,154,0.8)] active:scale-[0.97]"
+                href="#plans"
+                className="shine group inline-flex items-center gap-2.5 rounded-full bg-fog px-7 py-3.5 text-[15px] font-extrabold text-ink shadow-[0_10px_40px_-10px_rgba(255,255,255,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_50px_-10px_rgba(255,255,255,0.75)] active:scale-[0.97]"
               >
-                <IconDownload className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-0.5" />
-                دانلود اپلیکیشن
+                <IconBolt className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                دریافت اشتراک رایگان
               </a>
               <a
                 href="#platforms"
@@ -216,7 +216,7 @@ export default function Hero() {
                 </div>
 
                 <div className="mt-4 grid grid-cols-2 gap-3">
-                  <button className="rounded-xl bg-mint/14 py-3 text-[14.5px] font-extrabold text-mint ring-1 ring-mint/35 transition-all duration-300 hover:bg-mint hover:text-abyss active:scale-[0.97]">
+                  <button className="rounded-xl bg-fog py-3 text-[14.5px] font-extrabold text-ink ring-1 ring-white/60 transition-all duration-300 hover:brightness-95 active:scale-[0.97]">
                     خرید / Buy
                   </button>
                   <button className="rounded-xl bg-down/12 py-3 text-[14.5px] font-extrabold text-down ring-1 ring-down/35 transition-all duration-300 hover:bg-down hover:text-abyss active:scale-[0.97]">

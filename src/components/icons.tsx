@@ -279,3 +279,32 @@ export function TrustIcon({ name, className }: { name: string; className?: strin
       return <IconShield className={className} />;
   }
 }
+
+/* ---------- shop / cart icons ---------- */
+export const IconCart = ({ className = "h-5 w-5" }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden>
+    <path d="M4.5 6.5h2l1.6 9.2a1.8 1.8 0 0 0 1.8 1.5h7.6a1.8 1.8 0 0 0 1.8-1.5L20.5 10H7" />
+    <circle cx="10.2" cy="20.2" r="1.3" fill="currentColor" stroke="none" />
+    <circle cx="17" cy="20.2" r="1.3" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const IconClose = ({ className = "h-5 w-5" }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...S} strokeWidth={2.2} aria-hidden>
+    <path d="m6 6 12 12M18 6 6 18" />
+  </svg>
+);
+
+export const IconTrash = ({ className = "h-4.5 w-4.5" }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden>
+    <path d="M5 7h14M10 7V5.5A1.5 1.5 0 0 1 11.5 4h1A1.5 1.5 0 0 1 14 5.5V7m-8 0 .8 11.2a2 2 0 0 0 2 1.8h6.4a2 2 0 0 0 2-1.8L18 7" />
+    <path d="M10.2 11v5M13.8 11v5" />
+  </svg>
+);
+
+export const IconUser = ({ className = "h-5 w-5" }: IconProps) => (
+  <svg viewBox="0 0 24 24" className={className} {...S} aria-hidden>
+    <circle cx="12" cy="8.2" r="3.6" />
+    <path d="M5 20c.8-3.8 3.4-6 7-6s6.2 2.2 7 6" />
+  </svg>
+);

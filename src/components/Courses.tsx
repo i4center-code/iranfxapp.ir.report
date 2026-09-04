@@ -1,9 +1,10 @@
-import { COURSES, type Course } from "../lib/data";
+import { useCart } from "../lib/cart";
+import { COURSES, productFromCourse, type Course } from "../lib/data";
 import { Reveal, SectionHead } from "../lib/motion";
-import { IconArrowLeft, IconBook, IconClock, IconPlay, IconStar } from "./icons";
+import { IconBook, IconCart, IconClock, IconPlay, IconStar } from "./icons";
 
 /** miniature chart-pattern illustrations, one per course */
-function Pattern({ kind, color }: { kind: Course["pattern"]; color: string }) {
+export function Pattern({ kind, color }: { kind: Course["pattern"]; color: string }) {
   const paths: Record<Course["pattern"], React.ReactNode> = {
     channel: (
       <>
@@ -56,6 +57,7 @@ function Pattern({ kind, color }: { kind: Course["pattern"]; color: string }) {
 
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
+  const { addToCart, openPurchase } = useCart();
   return (
     <Reveal delay={(index % 3) * 110} className={featured ? "md:col-span-2" : ""}>
       <article
@@ -108,12 +110,27 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             </span>
           </div>
 
-          <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/8 pt-4 text-[13px]">
-            <span className="font-bold text-mint">رایگان برای مشترکین</span>
-            <span className="flex items-center gap-1.5 font-semibold text-mist transition-colors duration-300 group-hover:text-mint">
-              {featured ? "شروع مسیر یادگیری" : "مشاهده دوره"}
-              <IconArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-            </span>
+          <div className="mt-auto border-t border-white/10 pt-4">
+            <div className="flex items-center justify-between">
+              <p className="font-display text-[25px] leading-none text-fog">
+                {course.priceLabel}
+                <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">تومان</span>
+              </p>
+              <button
+                onClick={() => addToCart(productFromCourse(course))}
+                aria-label={`افزودن ${course.title} به سبد خرید`}
+                className="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+                style={{ color: course.levelColor, background: `${course.levelColor}18`, border: `1px solid ${course.levelColor}55` }}
+              >
+                <IconCart className="h-4.5 w-4.5" />
+              </button>
+            </div>
+            <button
+              onClick={() => openPurchase(productFromCourse(course))}
+              className="shine mt-3.5 w-full rounded-xl bg-fog py-3 text-[13.5px] font-extrabold text-ink shadow-[0_10px_30px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
+            >
+              مشاهده و خرید دوره
+            </button>
           </div>
         </div>
       </article>
@@ -134,7 +151,7 @@ export default function Courses() {
               معامله‌گر <span className="text-gold">حرفه‌ای</span>
             </>,
           ]}
-          desc="شش دوره تخصصی با الگوهای واقعی بازار، تمرین عملی روی چارت زنده و منتورینگ هفتگی — همه برای مشترکین ایران افیکس رایگان است."
+          desc="شش دوره تخصصی با الگوهای واقعی بازار، تمرین عملی روی چارت زنده و منتورینگ هفتگی — با تخفیف ویژه برای مشترکین ایران افیکس."
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
