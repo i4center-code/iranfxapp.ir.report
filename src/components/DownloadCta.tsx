@@ -27,7 +27,9 @@ function PhoneMock() {
                 <span className="font-display text-[15px] text-fog">{t("brand.name", "ایران افیکس")}</span>
                 <span className="rounded bg-mint/12 px-1.5 py-0.5 text-[9px] font-bold text-mint">PRO</span>
               </div>
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/6 text-[11px] font-bold text-mist">ن</span>
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/6 text-[11px] font-bold text-mist">
+                {t("brand.name", "ایران افیکس").charAt(0)}
+              </span>
             </div>
 
             <div className="mt-3 rounded-2xl border border-white/8 bg-white/3 p-3.5">

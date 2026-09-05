@@ -58,7 +58,7 @@ function ProductArt({ p }: { p: Product }) {
 /* ---------- پنل خرید محصول ---------- */
 function PurchaseDrawer() {
   const { purchase: p, closePurchase, addToCart, openCart } = useCart();
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -97,9 +97,25 @@ function PurchaseDrawer() {
             <ProductArt p={p} />
             <div className="min-w-0">
               <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: `${p.accent}1a`, color: p.accent }}>
-                {p.kindLabel}
+                {p.kind === "robot"
+                  ? t("svc.kindRobot", p.kindLabel)
+                  : p.kind === "course"
+                    ? t("svc.kindCourse", p.kindLabel)
+                    : p.id === "plan-monthly"
+                      ? t("plan.m.name", p.kindLabel)
+                      : t("plan.l.name", p.kindLabel)}
               </span>
-              <h3 className="mt-1.5 truncate font-display text-[26px] leading-tight text-fog">{p.name}</h3>
+              <h3 className="mt-1.5 truncate font-display text-[26px] leading-tight text-fog">
+                {p.id.startsWith("robot-")
+                  ? t(`svc.${p.id.replace("robot-", "")}.t`, p.name)
+                  : p.id.startsWith("course-")
+                    ? t(`course.${p.id.replace("course-", "")}.t`, p.name)
+                    : p.id === "plan-monthly"
+                      ? t("plan.m.name", p.name)
+                      : p.id === "plan-lifetime"
+                        ? t("plan.l.name", p.name)
+                        : p.name}
+              </h3>
             </div>
             <button
               onClick={closePurchase}
@@ -143,13 +159,15 @@ function PurchaseDrawer() {
           <div className="flex items-end justify-between">
             <div>
               <p className="text-[12px] text-mist">{t("shop.price", "قیمت")}</p>
-              <p className="font-display text-[34px] leading-none text-fog">
+              <p className="font-display text-[34px] leading-none text-fog" dir="ltr">
                 {p.priceNum === 0 ? (
-                  p.priceLabel
+                  t("plan.l.free", p.priceLabel)
                 ) : (
                   <>
-                    {p.priceLabel}
-                    <span className="mr-2 font-body text-[13px] font-bold text-mist">{p.unit}</span>
+                    {loc(p.priceLabel)}
+                    <span className="mr-2 font-body text-[13px] font-bold text-mist" dir="rtl">
+                      {p.id === "plan-monthly" ? t("plan.m.unit", p.unit) : t("svc.toman", p.unit)}
+                    </span>
                   </>
                 )}
               </p>
@@ -216,6 +234,8 @@ function CartDrawer() {
   const lineKind = (l: { id: string; name: string; kindLabel: string }) => {
     if (l.id.startsWith("robot-")) return t("svc.kindRobot", l.kindLabel);
     if (l.id.startsWith("course-")) return t("svc.kindCourse", l.kindLabel);
+    if (l.id === "plan-monthly") return t("plan.m.name", l.kindLabel);
+    if (l.id === "plan-lifetime") return t("plan.l.name", l.kindLabel);
     return l.kindLabel;
   };
 

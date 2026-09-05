@@ -71,6 +71,17 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
           className={`relative shrink-0 overflow-hidden ${featured ? "h-36 lg:h-auto lg:w-[42%]" : "h-32"}`}
         >
           <Pattern kind={course.pattern} color={course.levelColor} />
+          {featured && (
+            <img
+              src="https://image.qwenlm.ai/generated-images/cd447502-921f-4963-9252-c514e1a127c6/_result.png"
+              alt="دوره صفر تا صد بازارهای مالی"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          )}
           <span
             className="absolute right-4 top-4 rounded-full px-3 py-1 text-[11.5px] font-extrabold"
             style={{ background: `${course.levelColor}1f`, color: course.levelColor, border: `1px solid ${course.levelColor}44` }}

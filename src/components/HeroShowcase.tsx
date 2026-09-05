@@ -238,11 +238,18 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
             </div>
 
             <div className="mt-2 space-y-1.5">
-              {meta.positions.map((pos) => (
+              {meta.positions.map((pos) => {
+                const pairLabel =
+                  pos.pair === "طلای آبشده"
+                    ? t("hero.gold.p1", pos.pair)
+                    : pos.pair === "انس جهانی"
+                      ? t("hero.gold.p2", pos.pair)
+                      : pos.pair;
+                return (
                 <div key={pos.pair} className="flex items-center justify-between rounded-xl border border-white/7 bg-white/3 px-3 py-1.5 sm:py-2">
                   <div>
                     <p className="text-[10.5px] font-bold text-fog" dir="ltr">
-                      {pos.pair}
+                      {pairLabel}
                     </p>
                     <p className="text-[9px] text-mist">
                       {pos.side === "خرید" ? t("svc.buySide", pos.side) : t("svc.sellSide", pos.side)}
@@ -252,7 +259,8 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
                     {loc(pos.pnl)}
                   </span>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="mt-2.5 flex items-center justify-around rounded-2xl border border-white/8 bg-white/3 py-2">
