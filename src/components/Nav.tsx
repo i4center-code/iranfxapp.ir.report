@@ -61,7 +61,7 @@ export default function Nav() {
             {NAV_ITEMS.map((l) => (
               <li key={l.label}>
                 <a
-                  href={l.href}
+                  href={l.label === "سایت" ? "#top" : l.href}
                   className="group relative rounded-full px-4 py-2 text-[14.5px] font-bold text-mist transition-colors duration-200 hover:text-fog"
                 >
                   {l.label}
@@ -116,7 +116,7 @@ export default function Nav() {
             {NAV_ITEMS.map((l) => (
               <li key={l.label}>
                 <a
-                  href={l.href}
+                  href={l.label === "سایت" ? "#top" : l.href}
                   onClick={() => setOpen(false)}
                   className="block rounded-xl px-4 py-3 text-[15px] font-bold text-mist transition-colors hover:bg-white/6 hover:text-mint"
                 >

@@ -46,19 +46,19 @@
 }
 
 @theme {
-  --color-ink: #0c4f3e;
-  --color-abyss: #083327;
-  --color-panel: #115846;
-  --color-line: #1c6e58;
+  --color-ink: #121323;
+  --color-abyss: #0b0c19;
+  --color-panel: #181a30;
+  --color-line: #252a47;
   --color-pine: #1c896c;
-  --color-mint: #6ee9b8;
-  --color-foam: #adf3d6;
+  --color-mint: #3ecf9a;
+  --color-foam: #8fe9c8;
   --color-gold: #e6b45a;
   --color-ember: #ef9656;
   --color-skyx: #5cb8de;
   --color-down: #e5656c;
-  --color-fog: #ffffff;
-  --color-mist: #c9e6d9;
+  --color-fog: #f3f5fb;
+  --color-mist: #9aa3b8;
   --font-display: "IRANSansX", "IRANSans", "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
   --font-body: "IRANSansX", "IRANSans", "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
 }
@@ -79,12 +79,12 @@ body {
 }
 
 ::selection {
-  background: #ffffff;
-  color: #0c4f3e;
+  background: #1c896c;
+  color: #f3f5fb;
 }
 
 :focus-visible {
-  outline: 2px solid #adf3d6;
+  outline: 2px solid #3ecf9a;
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -162,13 +162,13 @@ body {
 
 @keyframes pulse-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(110, 233, 184, 0.55);
+    box-shadow: 0 0 0 0 rgba(62, 207, 154, 0.55);
   }
   75% {
-    box-shadow: 0 0 0 10px rgba(110, 233, 184, 0);
+    box-shadow: 0 0 0 10px rgba(62, 207, 154, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(110, 233, 184, 0);
+    box-shadow: 0 0 0 0 rgba(62, 207, 154, 0);
   }
 }
 .live-dot {
@@ -220,8 +220,8 @@ body {
 
 @keyframes flash-up {
   0% {
-    color: #9df4cf;
-    text-shadow: 0 0 18px rgba(157, 244, 207, 0.9);
+    color: #3ecf9a;
+    text-shadow: 0 0 18px rgba(62, 207, 154, 0.8);
   }
 }
 @keyframes flash-down {
@@ -264,6 +264,25 @@ body {
 }
 .spin-slow {
   animation: spin-slow 26s linear infinite;
+}
+
+/* نشانگر اسکرول موس */
+@keyframes wheel-roll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(9px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+.mouse-wheel {
+  animation: wheel-roll 1.8s ease-in-out infinite;
 }
 
 /* ---------- drawers, toast, badge ---------- */
@@ -391,6 +410,7 @@ body {
   .flash-down,
   .scan-line,
   .spin-slow,
+  .mouse-wheel,
   .drawer-panel,
   .backdrop-in,
   .pop {

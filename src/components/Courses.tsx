@@ -1,6 +1,6 @@
 import { useCart } from "../lib/cart";
 import { COURSES, productFromCourse, type Course } from "../lib/data";
-import { Reveal, SectionHead } from "../lib/motion";
+import { Reveal } from "../lib/motion";
 import { IconBook, IconCart, IconClock, IconPlay, IconStar } from "./icons";
 
 /** miniature chart-pattern illustrations, one per course */
@@ -140,21 +140,8 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 
 export default function Courses() {
   return (
-    <section id="academy" className="relative scroll-mt-24 py-20 lg:py-28">
-      <div className="pointer-events-none absolute top-1/3 left-[6%] h-[320px] w-[320px] rounded-full bg-gold/6 blur-[120px]" />
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHead
-          kicker="آکادمی ایران افیکس"
-          title={[
-            <>از مبتدی تا</>,
-            <>
-              معامله‌گر <span className="text-gold">حرفه‌ای</span>
-            </>,
-          ]}
-          desc="شش دوره تخصصی با الگوهای واقعی بازار، تمرین عملی روی چارت زنده و منتورینگ هفتگی — با تخفیف ویژه برای مشترکین ایران افیکس."
-        />
-
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mt-14">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {COURSES.map((c, i) => (
             <CourseCard key={c.id} course={c} index={i} />
           ))}
@@ -170,8 +157,7 @@ export default function Courses() {
               </p>
             </div>
           </Reveal>
-        </div>
       </div>
-    </section>
+    </div>
   );
 }
