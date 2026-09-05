@@ -23,17 +23,12 @@ function WinBar({ value, accent, start }: { value: number; accent: string; start
   );
 }
 
-/* نگاشت بازارها و نام ربات‌ها به کلیدهای ترجمه */
+/* نگاشت بازارها به کلیدهای ترجمه */
 const MKT_IDS: Record<string, string> = {
   "فارکس": "forex",
   "رمزارز": "crypto",
   "طلا": "gold",
   "شاخص‌ها": "indices",
-};
-const ROBOT_IDS: Record<string, string> = {
-  "میکوبات": "microbot",
-  "اُروبات": "orobat",
-  "یوز": "yuz",
 };
 
 function RobotCard({ robot, index }: { robot: Robot; index: number }) {
@@ -182,7 +177,7 @@ type FeedItem = { id: number; robot: string; side: Side; pair: string; price: st
 
 function SignalRow({ item, isNew }: { item: FeedItem; isNew: boolean }) {
   const { t, loc } = useI18n();
-  const robotId = ROBOT_IDS[item.robot] ?? "";
+  const robotId = item.robot;
   const buy = item.side === "buy";
   return (
     <li className={`flex items-center justify-between gap-3 rounded-xl border border-white/7 bg-white/3 px-4 py-3 ${isNew ? "rise" : ""}`}>

@@ -6,7 +6,7 @@ export const LOCALES: { code: LangCode; native: string; short: string; dir: "rtl
   { code: "fa", native: "فارسی", short: "FA", dir: "rtl", region: "ایران" },
   { code: "en", native: "English", short: "EN", dir: "ltr", region: "International" },
   { code: "ar", native: "العربية", short: "AR", dir: "rtl", region: "العراق" },
-  { code: "ps", native: "پښتو", short: "PS", dir: "rtl", region: "افغانستان" },
+  { code: "ps", native: "پشتو", short: "PS", dir: "rtl", region: "افغانستان" },
   { code: "tg", native: "Тоҷикӣ", short: "TJ", dir: "ltr", region: "Тоҷикистон" },
   { code: "ka", native: "ქართული", short: "KA", dir: "ltr", region: "საქართველო" },
   { code: "hy", native: "Հայերեն", short: "HY", dir: "ltr", region: "Հայաստան" },
@@ -2370,6 +2370,15 @@ const xar: Dict = {
   "course.c6.s": "8 دروس",
   "course.c6.h": "4 ساعات",
   "course.c6.d": "ربط روبوتات الإشارات بحسابك وبناء استراتيجية نصف آلية.",
+  "svc.microbot.t": "Microbot",
+  "svc.orobat.t": "Orobat",
+  "svc.yuz.t": "Yuz",
+  "svc.microbot.role": "روبوت التداول",
+  "plan.m.desc": "شهر واحد من الوصول الكامل غير المحدود إلى جميع ميزات إيران أفكس؛ روبوتات الإشارات الثلاثة، وقناة VIP، والأكاديمية، والدعم المخصص. لا تجديد تلقائي — التجديد بقرارك وحدك.",
+  "plan.l.desc": "بدلاً من الدفع الشهري، فقط افتح حساب تداول عبر إيران أفكس وستبقى جميع الميزات المميزة نشطة إلى الأبد. لا تجديد، لا تكاليف خفية، لا حد زمني.",
+  "dl.today": "+2.4% اليوم",
+  "dl.newSignal": "إشارة Microbot جديدة",
+  "dl.monthPnl": "عائد محفظتك هذا الشهر",
 };
 
 /* ================= کلیدهای تکمیلی — Türkçe ================= */
@@ -2459,6 +2468,15 @@ const xtr: Dict = {
   "course.c6.s": "8 ders",
   "course.c6.h": "4 saat",
   "course.c6.d": "Sinyal robotlarını hesabınıza bağlayın ve yarı otomatik bir strateji kurun.",
+  "svc.microbot.t": "Microbot",
+  "svc.orobat.t": "Orobat",
+  "svc.yuz.t": "Yuz",
+  "svc.microbot.role": "İşlem robotu",
+  "plan.m.desc": "İran FX'in tüm özelliklerine bir ay tam sınırsız erişim; üç sinyal robotu, VIP kanal, akademi ve özel destek. Otomatik yenileme yok — yenileme tamamen size bağlı.",
+  "plan.l.desc": "Aylık ödeme yerine, sadece İran FX üzerinden bir işlem hesabı açın ve tüm premium özellikler sonsuza dek aktif kalsın. Yenileme yok, gizli maliyet yok, süre sınırı yok.",
+  "dl.today": "+2.4% bugün",
+  "dl.newSignal": "Yeni Microbot sinyali",
+  "dl.monthPnl": "Portföyünüzün bu ayki getirisi",
 };
 
 /* ================= کلیدهای تکمیلی — اردو ================= */

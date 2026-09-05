@@ -7,7 +7,7 @@ import { IconCheck, IconShield } from "./icons";
 export default function Pricing() {
   const m = PLANS.monthly;
   const l = PLANS.lifetime;
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const { openPurchase } = useCart();
 
   const mFeatures = [t("plan.m.f1", m.features[0]), t("plan.m.f2", m.features[1]), t("plan.m.f3", m.features[2]), t("plan.m.f4", m.features[3]), t("plan.m.f5", m.features[4])];
@@ -34,7 +34,9 @@ export default function Pricing() {
               <p className="mt-1 text-[13px] text-mist">{t("plan.m.note", m.note)}</p>
               <p className="mt-4 text-[13px] leading-7 text-mist">{t("plan.m.desc", m.desc)}</p>
               <p className="mt-5 flex items-end gap-2">
-                <span className="font-display text-[46px] leading-none text-fog">{m.price}</span>
+                <span className="font-display text-[46px] leading-none text-fog" dir="ltr">
+                  {loc(m.price)}
+                </span>
                 <span className="pb-1.5 text-[14px] font-bold text-mist">{t("plan.m.unit", m.unit)}</span>
               </p>
               <ul className="mt-6 space-y-3.5">

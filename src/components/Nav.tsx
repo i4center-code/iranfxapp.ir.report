@@ -162,7 +162,7 @@ export default function Nav() {
             </span>
             <span className="flex flex-col leading-none">
               <span className="font-display text-[24px] text-fog lg:text-[26px]">{t("brand.name", "ایران افیکس")}</span>
-              <span className="mt-1 text-[10.5px] font-bold tracking-[0.28em] text-mint/90">IRAN FX</span>
+              <span className="mt-1 text-[10.5px] font-bold text-mint/90">{t("brand.tag", "هوشمندانه معامله کنید")}</span>
             </span>
           </a>
 

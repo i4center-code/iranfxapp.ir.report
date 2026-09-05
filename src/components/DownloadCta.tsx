@@ -7,7 +7,7 @@ import { IconAndroid, IconApple, IconCheck, IconDownload, IconSignal, IconWindow
 const STATIC_CANDLES = genCandles(42, 22, 100, 4, 0.1);
 
 function PhoneMock() {
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   return (
     <div className="relative mx-auto w-[290px] sm:w-[315px]">
       <div className="pointer-events-none absolute -inset-10 -z-10">
@@ -33,7 +33,7 @@ function PhoneMock() {
             <div className="mt-3 rounded-2xl border border-white/8 bg-white/3 p-3.5">
               <p className="text-[10px] text-mist">{t("dl.balance", "موجودی کل")}</p>
               <p className="font-display text-[24px] leading-tight text-fog" dir="ltr">
-                $۱۲٬۴۵۰٫۸۰
+                {loc("$12,450.80")}
               </p>
               <div className="mt-1 flex items-center justify-between">
                 <span className="rounded-full bg-mint/12 px-2 py-0.5 text-[9.5px] font-bold text-mint">{t("dl.today", "+۲٫۴٪ امروز")}</span>
@@ -49,7 +49,7 @@ function PhoneMock() {
                   XAU/USD
                 </span>
                 <span className="text-[11px] tabular-nums text-mint" dir="ltr">
-                  ۲٬۳۸۴٫۵۰
+                  {loc("2,384.50")}
                 </span>
               </div>
               <div className="mt-1.5 h-16">
@@ -63,8 +63,8 @@ function PhoneMock() {
 
             <div className="mt-3 space-y-2">
               {[
-                { pair: "BTC/USDT", side: t("svc.buySide", "خرید"), pnl: "+۳٫۱٪", up: true },
-                { pair: "EUR/USD", side: t("svc.sellSide", "فروش"), pnl: "−۰٫۴٪", up: false },
+                { pair: "BTC/USDT", side: t("svc.buySide", "خرید"), pnl: "+3.1%", up: true },
+                { pair: "EUR/USD", side: t("svc.sellSide", "فروش"), pnl: "-0.4%", up: false },
               ].map((pos) => (
                 <div key={pos.pair} className="flex items-center justify-between rounded-xl border border-white/7 bg-white/3 px-3 py-2">
                   <div>
@@ -74,7 +74,7 @@ function PhoneMock() {
                     <p className="text-[9px] text-mist">{pos.side}</p>
                   </div>
                   <span className={`text-[11px] font-extrabold tabular-nums ${pos.up ? "text-mint" : "text-down"}`} dir="ltr">
-                    {pos.pnl}
+                    {loc(pos.pnl)}
                   </span>
                 </div>
               ))}
@@ -96,13 +96,13 @@ function PhoneMock() {
           {t("dl.newSignal", "سیگنال جدید میکوبات")}
         </p>
         <p className="mt-1.5 text-[10.5px] leading-5 text-mist">
-          {t("svc.buySide", "خرید")} <bdo dir="ltr">BTC/USDT</bdo> <bdo dir="ltr">۶۷٬۲۱۴</bdo>
+          {t("svc.buySide", "خرید")} <bdo dir="ltr">BTC/USDT</bdo> <bdo dir="ltr">{loc("67,214")}</bdo>
         </p>
         <span className="mt-2 inline-block rounded-full bg-mint/12 px-2.5 py-0.5 text-[9.5px] font-bold text-mint">{t("dl.now", "همین حالا")}</span>
       </div>
       <div className="anim-float-late absolute -left-14 bottom-24 hidden rounded-2xl border border-gold/30 bg-abyss/95 px-4 py-3 shadow-[0_18px_45px_-15px_rgba(0,0,0,0.85)] backdrop-blur-md md:block">
         <p className="font-display text-[22px] leading-none text-gold" dir="ltr">
-          +۱۸٫۲٪
+          {loc("+18.2%")}
         </p>
         <p className="mt-1 text-[10px] text-mist">{t("dl.monthPnl", "بازده این ماه سبد شما")}</p>
       </div>
@@ -111,7 +111,7 @@ function PhoneMock() {
 }
 
 export default function DownloadCta() {
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const buttons = [
     { icon: IconAndroid, title: t("dl.android", "دانلود برای اندروید"), sub: t("dl.androidSub", "APK مستقیم • ۳۸ مگابایت") },
     { icon: IconWindows, title: t("dl.win", "نسخه ویندوز"), sub: t("dl.winSub", "x64 • نسخه ۴٫۲٫۰") },
@@ -192,11 +192,11 @@ export default function DownloadCta() {
           <div className="relative mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-white/8 pt-8">
             <p className="flex items-center gap-2.5 text-[13px] text-mist">
               <IconDownload className="h-5 w-5 text-mint" />
-              <b className="text-fog" dir="ltr">۲۸٬۵۰۰+</b> {t("dl.installs", "نصب فعال روی اندروید و ویندوز")}
+              <b className="text-fog" dir="ltr">{loc("28,500+")}</b> {t("dl.installs", "نصب فعال روی اندروید و ویندوز")}
             </p>
             <div className="flex items-center gap-2 text-[13px] text-mist">
               <span className="text-gold">★★★★★</span>
-              {t("dl.rating", "امتیاز از ۵ — بر اساس ۶٬۲۰۰ نظر")} <b className="text-fog" dir="ltr">۴٫۸</b>
+              {t("dl.rating", "امتیاز از ۵ — بر اساس ۶٬۲۰۰ نظر")} <b className="text-fog" dir="ltr">{loc("4.8")}</b>
             </div>
           </div>
         </div>

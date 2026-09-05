@@ -173,16 +173,16 @@ export const ROBOTS: Robot[] = [
 ];
 
 export const SIGNAL_POOL: { robot: string; side: Side; pair: string; price: string }[] = [
-  { robot: "میکوبات", side: "buy", pair: "BTC/USDT", price: "۶۷٬۲۱۴" },
-  { robot: "اُروبات", side: "buy", pair: "XAU/USD", price: "۲٬۳۸۱٫۴" },
-  { robot: "یوز", side: "sell", pair: "EUR/USD", price: "۱٫۰۸۵۶" },
-  { robot: "میکوبات", side: "sell", pair: "ETH/USDT", price: "۳٬۵۲۰٫۲" },
-  { robot: "اُروبات", side: "buy", pair: "GBP/USD", price: "۱٫۲۶۹۰" },
-  { robot: "یوز", side: "buy", pair: "US30", price: "۳۹٬۰۸۵" },
-  { robot: "میکوبات", side: "buy", pair: "SOL/USDT", price: "۱۴۸٫۷" },
-  { robot: "اُروبات", side: "sell", pair: "USD/JPY", price: "۱۵۷٫۶۵" },
-  { robot: "یوز", side: "buy", pair: "XAU/USD", price: "۲٬۳۷۷٫۹" },
-  { robot: "میکوبات", side: "buy", pair: "XRP/USDT", price: "۰٫۵۲۸۴" },
+  { robot: "microbot", side: "buy", pair: "BTC/USDT", price: "۶۷٬۲۱۴" },
+  { robot: "orobat", side: "buy", pair: "XAU/USD", price: "۲٬۳۸۱٫۴" },
+  { robot: "yuz", side: "sell", pair: "EUR/USD", price: "۱٫۰۸۵۶" },
+  { robot: "microbot", side: "sell", pair: "ETH/USDT", price: "۳٬۵۲۰٫۲" },
+  { robot: "orobat", side: "buy", pair: "GBP/USD", price: "۱٫۲۶۹۰" },
+  { robot: "yuz", side: "buy", pair: "US30", price: "۳۹٬۰۸۵" },
+  { robot: "microbot", side: "buy", pair: "SOL/USDT", price: "۱۴۸٫۷" },
+  { robot: "orobat", side: "sell", pair: "USD/JPY", price: "۱۵۷٫۶۵" },
+  { robot: "yuz", side: "buy", pair: "XAU/USD", price: "۲٬۳۷۷٫۹" },
+  { robot: "microbot", side: "buy", pair: "XRP/USDT", price: "۰٫۵۲۸۴" },
 ];
 
 /* ---------- خدمات تخصصی ---------- */

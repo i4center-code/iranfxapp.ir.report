@@ -20,7 +20,7 @@ export type CartLine = {
 };
 
 export type ToastKind = "added" | "dup" | "gw" | "crypto";
-type Toast = { id: number; kind: ToastKind; name?: string };
+export type Toast = { id: number; kind: ToastKind; pid?: string };
 
 type CartContextValue = {
   lines: CartLine[];
@@ -35,7 +35,7 @@ type CartContextValue = {
   closePurchase: () => void;
   openCart: () => void;
   closeCart: () => void;
-  notify: (kind: ToastKind) => void;
+  notify: (kind: ToastKind, pid?: string) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -53,9 +53,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<Toast | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
-  const showToast = useCallback((msg: string) => {
+  const showToast = useCallback((kind: ToastKind, pid?: string) => {
     window.clearTimeout(toastTimer.current);
-    setToast({ id: Date.now(), msg });
+    setToast({ id: Date.now(), kind, pid });
     toastTimer.current = window.setTimeout(() => setToast(null), 2600);
   }, []);
 
@@ -63,10 +63,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (p: Product) => {
       setLines((prev) => {
         if (prev.some((l) => l.id === p.id)) {
-          showToast(`«${p.name}» از قبل در سبد شماست`);
+          showToast("dup", p.id);
           return prev;
         }
-        showToast(`«${p.name}» به سبد خرید اضافه شد`);
+        showToast("added", p.id);
         return [
           ...prev,
           {

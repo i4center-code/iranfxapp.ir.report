@@ -198,13 +198,26 @@ function PurchaseDrawer() {
 /* ---------- سبد خرید با انتخاب روش پرداخت ---------- */
 function CartDrawer() {
   const { cartOpen, closeCart, lines, total, removeLine, notify } = useCart();
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const [method, setMethod] = useState<"rial" | "crypto">("rial");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (cartOpen) setCopied(false);
   }, [cartOpen]);
+
+  const lineName = (l: { id: string; name: string; kindLabel: string }) => {
+    if (l.id.startsWith("robot-")) return t(`svc.${l.id.replace("robot-", "")}.t`, l.name);
+    if (l.id.startsWith("course-")) return t(`course.${l.id.replace("course-", "")}.t`, l.name);
+    if (l.id === "plan-monthly") return t("plan.m.name", l.name);
+    if (l.id === "plan-lifetime") return t("plan.l.name", l.name);
+    return l.name;
+  };
+  const lineKind = (l: { id: string; name: string; kindLabel: string }) => {
+    if (l.id.startsWith("robot-")) return t("svc.kindRobot", l.kindLabel);
+    if (l.id.startsWith("course-")) return t("svc.kindCourse", l.kindLabel);
+    return l.kindLabel;
+  };
 
   if (!cartOpen) return null;
 
@@ -268,12 +281,12 @@ function CartDrawer() {
                     {l.id.startsWith("robot") ? <IconBolt className="h-5 w-5" /> : l.id.startsWith("course") ? <IconBook className="h-5 w-5" /> : <IconShield className="h-5 w-5" />}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[14px] font-extrabold text-fog">{l.name}</p>
-                    <p className="text-[11.5px] text-mist">{l.kindLabel}</p>
+                    <p className="truncate text-[14px] font-extrabold text-fog">{lineName(l)}</p>
+                    <p className="text-[11.5px] text-mist">{lineKind(l)}</p>
                   </div>
                   <div className="text-left">
                     <p className="text-[13.5px] font-extrabold tabular-nums text-fog" dir="ltr">
-                      {l.priceLabel}
+                      {loc(l.priceLabel)}
                     </p>
                     {l.priceNum > 0 && <p className="text-[10.5px] text-mist">{t("svc.toman", "تومان")}</p>}
                   </div>
@@ -345,7 +358,7 @@ function CartDrawer() {
             )}
 
             <button
-              onClick={() => notify(method === "rial" ? t("shop.toastGw", "در حال اتصال به درگاه امن پی‌پینگ…") : t("shop.toastCrypto", "سفارش شما برای پرداخت رمزارزی ثبت شد"))}
+              onClick={() => notify(method === "rial" ? "gw" : "crypto")}
               className={`shine mt-4 w-full rounded-xl py-4 text-[15.5px] font-extrabold text-ink shadow-[0_14px_40px_-10px_rgba(255,255,255,0.45)] transition-all duration-300 hover:brightness-95 active:scale-[0.97] ${
                 method === "rial" ? "bg-paper" : "bg-gold"
               }`}
@@ -365,14 +378,31 @@ function CartDrawer() {
 /* ---------- اعلان (توست) ---------- */
 function ToastHost() {
   const { toast } = useCart();
+  const { t } = useI18n();
   if (!toast) return null;
+
+  const nameOf = (pid?: string) => {
+    if (!pid) return "";
+    if (pid.startsWith("robot-")) return t(`svc.${pid.replace("robot-", "")}.t`, pid);
+    if (pid.startsWith("course-")) return t(`course.${pid.replace("course-", "")}.t`, pid);
+    if (pid === "plan-monthly") return t("plan.m.name", "اشتراک یک‌ماهه");
+    if (pid === "plan-lifetime") return t("plan.l.name", "اشتراک دائمی");
+    return pid;
+  };
+
+  let msg = "";
+  if (toast.kind === "added") msg = `«${nameOf(toast.pid)}» ${t("shop.toastAdded", "به سبد خرید اضافه شد")}`;
+  else if (toast.kind === "dup") msg = `«${nameOf(toast.pid)}» ${t("shop.toastDup", "از قبل در سبد شماست")}`;
+  else if (toast.kind === "gw") msg = t("shop.toastGw", "در حال اتصال به درگاه امن پی‌پینگ…");
+  else msg = t("shop.toastCrypto", "سفارش شما برای پرداخت رمزارزی ثبت شد");
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-8 z-[90] flex justify-center px-4">
       <div key={toast.id} className="rise glass-deep flex items-center gap-3 rounded-full border-mint/35 py-3 pl-6 pr-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)]">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-mint/18 text-mint ring-1 ring-mint/40">
           <IconCheck className="h-4 w-4" />
         </span>
-        <p className="text-[13.5px] font-bold text-fog">{toast.msg}</p>
+        <p className="text-[13.5px] font-bold text-fog">{msg}</p>
       </div>
     </div>
   );
