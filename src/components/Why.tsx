@@ -1,7 +1,6 @@
 import { WHY_ITEMS } from "../lib/data";
-import { faNum } from "../lib/format";
 import { useI18n } from "../lib/i18n";
-import { Reveal, useCountUp, useInView } from "../lib/motion";
+import { Reveal } from "../lib/motion";
 import { IconArrowLeft } from "./icons";
 
 function WhyIcon({ id, className = "h-6 w-6" }: { id: string; className?: string }) {
@@ -54,16 +53,20 @@ function WhyIcon({ id, className = "h-6 w-6" }: { id: string; className?: string
 }
 
 function FoundingStat() {
-  const { t } = useI18n();
-  const [ref, inView] = useInView<HTMLDivElement>();
-  const n = useCountUp(1399, inView);
+  const { t, lang } = useI18n();
+  /* سال تأسیس — عدد ثابت، بدون جداکننده هزارگان */
+  const year = lang === "fa" ? "۱۳۹۹" : "1399";
   return (
-    <div ref={ref} className="mt-8 flex items-center gap-6 rounded-2xl border border-white/10 bg-abyss/50 p-5">
-      <span className="font-display text-[46px] leading-none text-mint">{faNum(n)}</span>
+    <div className="mt-8 flex items-center gap-6 rounded-2xl border border-white/10 bg-abyss/50 p-5">
+      <span className="font-display text-[46px] leading-none text-mint" dir="ltr">
+        {year}
+      </span>
       <span className="text-[13px] leading-6 text-mist">
         {t("why.year", "سال تأسیس")}
         <br />
-        <b className="text-fog">۵+ {t("why.yearNote", "سال تجربه در کنار معامله‌گران ایرانی")}</b>
+        <b className="text-fog">
+          {lang === "fa" ? "۵+" : "5+"} {t("why.yearNote", "سال تجربه در کنار معامله‌گران ایرانی")}
+        </b>
       </span>
     </div>
   );

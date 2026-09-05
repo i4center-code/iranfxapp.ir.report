@@ -61,8 +61,8 @@ export default function App() {
             <Reference />
             <Features />
             <Pricing />
-            <FinalCta />
             <DownloadCta />
+            <FinalCta />
           </main>
           <Footer />
           <BackToTop />

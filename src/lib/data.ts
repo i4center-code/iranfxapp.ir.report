@@ -545,6 +545,9 @@ export type Product = {
   unit: string;
 };
 
+/* تبدیل «؛» به «،» برای نمایش یکدست در پنل خرید */
+const norm = (s: string) => s.replace(/؛/g, "،");
+
 export function productFromRobot(r: Robot): Product {
   return {
     id: `robot-${r.id}`,
@@ -552,7 +555,7 @@ export function productFromRobot(r: Robot): Product {
     kindLabel: "ربات معاملاتی",
     name: r.name,
     accent: r.accent,
-    desc: r.desc,
+    desc: norm(r.desc),
     features: [
       `نرخ موفقیت ٪${r.winRate} در ۹۰ روز گذشته`,
       `سیگنال روزانه: ${r.daily}`,
@@ -579,7 +582,7 @@ export function productFromCourse(c: Course): Product {
     kindLabel: "دوره آموزشی",
     name: c.title,
     accent: c.levelColor,
-    desc: c.desc,
+    desc: norm(c.desc),
     features: [
       "دسترسی مادام‌العمر به ویدیوها",
       "تمرین عملی روی چارت زنده",
@@ -606,8 +609,8 @@ export function productFromPlan(key: "monthly" | "lifetime"): Product {
     kindLabel: key === "monthly" ? "اشتراک ماهانه" : "اشتراک دائمی",
     name: p.name,
     accent: key === "monthly" ? "#3ecf9a" : "#e6b45a",
-    desc: p.desc,
-    features: p.features,
+    desc: norm(p.desc),
+    features: p.features.map(norm),
     meta:
       key === "monthly"
         ? [

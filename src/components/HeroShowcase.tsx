@@ -343,7 +343,7 @@ function SlideContent({ sys, candles, dir, live, flip }: { sys: System; candles:
 
 /* ---------- اسلاید معرفی ---------- */
 function IntroSlide() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [statsRef, statsIn] = useInView<HTMLDivElement>();
   const traders = useCountUp(28500, statsIn);
   const signals = useCountUp(1240, statsIn);
@@ -375,8 +375,8 @@ function IntroSlide() {
         ].map((s) => (
           <div key={s.label} className="flex flex-col items-center">
             <span className="font-display text-[26px] leading-none text-fog sm:text-[38px]">
-              {faNum(s.v)}
-              <span className="text-mint">{s.suffix}</span>
+              {["fa", "ps", "ur"].includes(lang) ? faNum(s.v) : Math.round(s.v).toLocaleString("en-US")}
+              <span className="text-mint">{["fa", "ps", "ur"].includes(lang) ? s.suffix : s.suffix === "٪" ? "%" : s.suffix}</span>
             </span>
             <span className="mt-2 text-[11px] font-medium text-mist sm:text-[12.5px]">{s.label}</span>
           </div>
@@ -439,7 +439,7 @@ export default function HeroShowcase() {
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const max = rect.height - window.innerHeight;
-    const target = (usable * i) / Math.max(1, panels - 1);
+    const target = (usable * i) / panels;
     window.scrollTo({ top: window.scrollY + rect.top + target * max, behavior: reduced ? "auto" : "smooth" });
   };
 
@@ -467,21 +467,23 @@ export default function HeroShowcase() {
         <div className="pointer-events-none absolute -right-40 top-1/3 h-[480px] w-[480px] rounded-full bg-dusk/45 blur-[130px]" />
         <div className="bg-grid pointer-events-none absolute inset-0" />
 
-        <div className="relative mx-auto flex h-full w-full max-w-7xl flex-col justify-center px-5 pb-16 pt-24 sm:pt-24 lg:px-8 lg:pb-8 lg:pt-10">
+        <div className="relative mx-auto h-full w-full max-w-7xl px-5 pb-16 pt-24 lg:px-8 lg:pb-8 lg:pt-10">
           {slides.map((s, i) => {
-            const local = clamp01(slideFloat - i);
-            const eased = easeOutCubic(local);
-            const isLast = i === slides.length - 1;
+            const dist = slideFloat - i;
+            const enter = i === 0 ? 1 : clamp01(dist + 1);
+            const exit = easeOutCubic(clamp01(dist));
+            const opacity = enter * (1 - exit);
             return (
               <div
                 key={s.key}
-                className={i === 0 ? "w-full" : "absolute inset-0 flex w-full items-center"}
+                className="absolute inset-0 flex w-full items-center"
                 style={{
-                  opacity: isLast ? clamp01(local * 1.5) : 1 - eased,
-                  transform: `translateY(${isLast ? (1 - eased) * 7 : -eased * 7}vh)`,
-                  pointerEvents: (isLast && local < 0.3) || (!isLast && eased > 0.45) ? "none" : "auto",
+                  opacity,
+                  transform: `translateY(${(1 - enter) * 6 - exit * 6}vh)`,
+                  visibility: opacity > 0.02 ? "visible" : "hidden",
+                  pointerEvents: opacity > 0.5 ? "auto" : "none",
                 }}
-                aria-hidden={!isLast && eased > 0.6}
+                aria-hidden={opacity < 0.5}
               >
                 {s.node}
               </div>

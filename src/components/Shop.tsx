@@ -67,6 +67,15 @@ function PurchaseDrawer() {
 
   if (!p) return null;
 
+  const desc =
+    p.kind === "robot"
+      ? t(`svc.${p.id.replace("robot-", "")}.d`, p.desc)
+      : p.id === "plan-monthly"
+        ? t("plan.m.desc", p.desc)
+        : p.id === "plan-lifetime"
+          ? t("plan.l.desc", p.desc)
+          : p.desc;
+
   const onAdd = () => {
     addToCart(p);
     setAdded(true);
@@ -103,7 +112,7 @@ function PurchaseDrawer() {
         </div>
 
         <div className="flex-1 overflow-y-auto px-7 py-6">
-          <p className="text-[14px] leading-8 text-fog/90">{p.desc}</p>
+          <p className="text-[14px] leading-8 text-fog/90">{desc}</p>
 
           <div className="mt-5 grid grid-cols-2 gap-2.5">
             {p.meta.map((m) => (
