@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCart } from "../lib/cart";
-import { COURSES, ROBOTS, type Product } from "../lib/data";
-import { faNum } from "../lib/format";
+import { COURSES, PLANS, ROBOTS, type Product } from "../lib/data";
 import { useI18n } from "../lib/i18n";
 import { Pattern } from "./Courses";
 import {
@@ -58,7 +57,7 @@ function ProductArt({ p }: { p: Product }) {
 /* ---------- پنل خرید محصول ---------- */
 function PurchaseDrawer() {
   const { purchase: p, closePurchase, addToCart, openCart } = useCart();
-  const { t, loc } = useI18n();
+  const { t, loc, dir } = useI18n();
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -67,14 +66,74 @@ function PurchaseDrawer() {
 
   if (!p) return null;
 
+  /* ---- ساخت نمای ترجمه‌شده محصول (مشخصات + امکانات) ---- */
+  const base = p.id.split("-")[1] ?? "";
+  const MKT: Record<string, string> = { "فارکس": "forex", "رمزارز": "crypto", "طلا": "gold", "شاخص‌ها": "indices" };
+  let metaView: { label: string; value: string }[] = [];
+  let featureView: string[] = [];
+
+  if (p.kind === "robot") {
+    const r = ROBOTS.find((x) => x.id === base);
+    if (r) {
+      const wr = loc(`${r.winRate}%`);
+      const daily = t(`svc.${base}.daily`, r.daily);
+      const style = t(`svc.${base}.time`, r.timeframe);
+      metaView = [
+        { label: t("prod.mWinRate", "نرخ موفقیت"), value: wr },
+        { label: t("prod.mDaily", "سیگنال روزانه"), value: daily },
+        { label: t("prod.mStyle", "سبک"), value: style },
+        { label: t("prod.mMarkets", "بازارها"), value: r.markets.map((m) => t(`svc.mkt.${MKT[m] ?? m}`, m)).join(dir === "rtl" ? "، " : ", ") },
+      ];
+      featureView = [
+        t("prod.fWinRate90", "نرخ موفقیت {v} در ۹۰ روز گذشته").replace("{v}", wr),
+        t("prod.fDailyV", "سیگنال روزانه: {v}").replace("{v}", daily),
+        t("prod.fStyleV", "سبک معاملاتی: {v}").replace("{v}", style),
+        t("prod.fDelivery", "ارسال سیگنال به تلگرام و داخل اپلیکیشن"),
+        t("prod.fGuarantee7", "گارانتی بازگشت وجه تا ۷ روز"),
+      ];
+    }
+  } else if (p.kind === "course") {
+    const c = COURSES.find((x) => x.id === base);
+    if (c) {
+      metaView = [
+        { label: t("prod.mLevel", "سطح"), value: t(`course.${base}.lv`, c.level) },
+        { label: t("prod.mTeacher", "مدرس"), value: t(`course.${base}.tc`, c.teacher) },
+        { label: t("prod.mSessions", "جلسات"), value: t(`course.${base}.s`, c.sessions) },
+        { label: t("prod.mHours", "مدت"), value: t(`course.${base}.h`, c.hours) },
+      ];
+      featureView = [
+        t("prod.fLifetime", "دسترسی مادام‌العمر به ویدیوها"),
+        t("prod.fPractice", "تمرین عملی روی چارت زنده"),
+        t("prod.fCertificate", "گواهینامه پایان دوره ایران افیکس"),
+        t("prod.fWeekly", "رفع اشکال هفتگی با مدرس"),
+      ];
+    }
+  } else if (p.id === "plan-monthly") {
+    metaView = [
+      { label: t("prod.mValidity", "مدت اعتبار"), value: t("plan.duration30", "۳۰ روز") },
+      { label: t("prod.mRenew", "تمدید"), value: t("plan.renewManual", "دستی و اختیاری") },
+      { label: t("prod.mWarranty", "ضمانت"), value: t("plan.warranty7", "بازگشت ۷ روزه") },
+    ];
+    featureView = PLANS.monthly.features.map((f, i) => t(`plan.m.f${i + 1}`, f));
+  } else {
+    metaView = [
+      { label: t("prod.mValidity", "مدت اعتبار"), value: t("plan.lifetimeVal", "همیشگی") },
+      { label: t("prod.mCost", "هزینه"), value: t("plan.freeVal", "رایگان") },
+      { label: t("prod.mActivation", "فعال‌سازی"), value: t("plan.activationAccount", "با افتتاح حساب") },
+    ];
+    featureView = PLANS.lifetime.features.map((f, i) => t(`plan.l.f${i + 1}`, f));
+  }
+
   const desc =
     p.kind === "robot"
-      ? t(`svc.${p.id.replace("robot-", "")}.d`, p.desc)
-      : p.id === "plan-monthly"
-        ? t("plan.m.desc", p.desc)
-        : p.id === "plan-lifetime"
-          ? t("plan.l.desc", p.desc)
-          : p.desc;
+      ? t(`svc.${base}.d`, p.desc)
+      : p.kind === "course"
+        ? t(`course.${base}.d`, p.desc)
+        : p.id === "plan-monthly"
+          ? t("plan.m.desc", p.desc)
+          : p.id === "plan-lifetime"
+            ? t("plan.l.desc", p.desc)
+            : p.desc;
 
   const onAdd = () => {
     addToCart(p);
@@ -131,7 +190,7 @@ function PurchaseDrawer() {
           <p className="text-[14px] leading-8 text-fog/90">{desc}</p>
 
           <div className="mt-5 grid grid-cols-2 gap-2.5">
-            {p.meta.map((m) => (
+            {metaView.map((m) => (
               <div key={m.label} className="rounded-xl border border-white/8 bg-white/3 px-3.5 py-3">
                 <p className="text-[11px] text-mist">{m.label}</p>
                 <p className="mt-1 text-[13.5px] font-extrabold text-fog">{m.value}</p>
@@ -144,7 +203,7 @@ function PurchaseDrawer() {
             {t("shop.receive", "چه چیزهایی دریافت می‌کنید؟")}
           </h4>
           <ul className="mt-3.5 space-y-3">
-            {p.features.map((f) => (
+            {featureView.map((f) => (
               <li key={f} className="flex items-start gap-3 text-[13.5px] leading-6 text-fog/85">
                 <span className="mt-0.5 flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full" style={{ background: `${p.accent}1a`, color: p.accent }}>
                   <IconCheck className="h-3 w-3" />
@@ -266,7 +325,7 @@ function CartDrawer() {
             <IconCart className="h-6 w-6 text-mint" />
             {t("shop.cartTitle", "سبد خرید")}
             {lines.length > 0 && (
-              <span className="rounded-full bg-mint px-2.5 py-0.5 font-body text-[12px] font-extrabold text-ink">{faNum(lines.length)} {t("shop.items", "مورد")}</span>
+              <span className="rounded-full bg-mint px-2.5 py-0.5 font-body text-[12px] font-extrabold text-ink">{loc(lines.length)} {t("shop.items", "مورد")}</span>
             )}
           </h3>
           <button
@@ -327,9 +386,9 @@ function CartDrawer() {
           <div className="border-t border-white/8 bg-abyss/50 px-7 py-5">
             <div className="flex items-center justify-between">
               <span className="text-[13.5px] text-mist">{t("shop.total", "جمع سبد خرید")}</span>
-              <span className="font-display text-[26px] text-fog">
-                {faNum(total)}
-                <span className="mr-1.5 font-body text-[12px] font-bold text-mist">{t("svc.toman", "تومان")}</span>
+              <span className="font-display text-[26px] text-fog" dir="ltr">
+                {loc(total)}
+                <span className="mr-1.5 font-body text-[12px] font-bold text-mist" dir="rtl">{t("svc.toman", "تومان")}</span>
               </span>
             </div>
 
