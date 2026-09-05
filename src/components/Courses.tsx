@@ -1,5 +1,6 @@
 import { useCart } from "../lib/cart";
 import { COURSES, productFromCourse, type Course } from "../lib/data";
+import { useI18n } from "../lib/i18n";
 import { Reveal } from "../lib/motion";
 import { IconBook, IconCart, IconClock, IconPlay, IconStar } from "./icons";
 
@@ -58,6 +59,7 @@ export function Pattern({ kind, color }: { kind: Course["pattern"]; color: strin
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
   const { addToCart, openPurchase } = useCart();
+  const { t } = useI18n();
   return (
     <Reveal delay={(index % 3) * 110} className={featured ? "md:col-span-2" : ""}>
       <article
@@ -93,7 +95,9 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
               انجام اولین معامله واقعی، قدم‌به‌قدم و به زبان ساده.
             </p>
           )}
-          <p className="mt-2 text-[12.5px] text-mist">مدرس: {course.teacher}</p>
+          <p className="mt-2 text-[12.5px] text-mist">
+            {t("course.teacher", "مدرس")}: {course.teacher}
+          </p>
 
           <div className="mb-5 mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-mist">
             <span className="flex items-center gap-1.5">
@@ -127,9 +131,9 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             </div>
             <button
               onClick={() => openPurchase(productFromCourse(course))}
-              className="shine mt-3.5 w-full rounded-xl bg-fog py-3 text-[13.5px] font-extrabold text-ink shadow-[0_10px_30px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
+              className="shine mt-3.5 w-full rounded-xl bg-paper py-3 text-[13.5px] font-extrabold text-ink shadow-[0_10px_30px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
             >
-              مشاهده و خرید دوره
+              {t("course.buy", "مشاهده و خرید دوره")}
             </button>
           </div>
         </div>
@@ -139,24 +143,24 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
 }
 
 export default function Courses() {
+  const { t } = useI18n();
   return (
     <div className="mt-14">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {COURSES.map((c, i) => (
-            <CourseCard key={c.id} course={c} index={i} />
-          ))}
-          {/* upcoming placeholder */}
-          <Reveal delay={220}>
-            <div className="flex h-full min-h-[220px] flex-col items-center justify-center gap-3 rounded-[22px] border border-dashed border-white/15 p-6 text-center transition-colors duration-300 hover:border-mint/40">
-              <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/4">
-                <IconClock className="h-6 w-6 text-mist" />
-              </span>
-              <p className="font-display text-[22px] text-fog">تحلیل آنچین رمزارزها</p>
-              <p className="text-[12.5px] text-mist">
-                دوره بعدی آکادمی — <b className="text-mint">به‌زودی</b>
-              </p>
-            </div>
-          </Reveal>
+        {COURSES.map((c, i) => (
+          <CourseCard key={c.id} course={c} index={i} />
+        ))}
+        <Reveal delay={220}>
+          <div className="flex h-full min-h-[220px] flex-col items-center justify-center gap-3 rounded-[22px] border border-dashed border-white/15 p-6 text-center transition-colors duration-300 hover:border-mint/40">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/4">
+              <IconClock className="h-6 w-6 text-mist" />
+            </span>
+            <p className="font-display text-[22px] text-fog">On-Chain Analysis</p>
+            <p className="text-[12.5px] text-mist">
+              {t("ref.upcoming", "دوره بعدی آکادمی")} — <b className="text-mint">{t("ref.soon", "به‌زودی")}</b>
+            </p>
+          </div>
+        </Reveal>
       </div>
     </div>
   );

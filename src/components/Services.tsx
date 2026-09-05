@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
 import { useCart } from "../lib/cart";
-import {
-  productFromRobot,
-  ROBOTS,
-  SERVICE_TILES,
-  SERVICES_INTRO,
-  SIGNAL_POOL,
-  type Robot,
-  type Side,
-} from "../lib/data";
+import { productFromRobot, ROBOTS, SERVICE_TILES, SIGNAL_POOL, type Robot, type Side } from "../lib/data";
 import { faTime } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 import { Reveal, SectionHead, useInView, usePrefersReducedMotion } from "../lib/motion";
 import { IconCart, RobotMicrobot, RobotOrobat, RobotYuz } from "./icons";
 
@@ -33,6 +26,7 @@ function WinBar({ value, accent, start }: { value: number; accent: string; start
 function RobotCard({ robot, index }: { robot: Robot; index: number }) {
   const [ref, inView] = useInView<HTMLDivElement>();
   const { addToCart, openPurchase } = useCart();
+  const { t } = useI18n();
   const Avatar = AVATARS[robot.id];
   return (
     <Reveal delay={index * 120}>
@@ -60,7 +54,7 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
                 style={{ color: robot.accent, border: `1px solid ${robot.accent}55` }}
               >
                 <span className="live-dot h-1.5 w-1.5 rounded-full" style={{ background: robot.accent }} />
-                آنلاین
+                {t("svc.online", "آنلاین")}
               </span>
             </span>
             <span className="rounded-full px-3 py-1 text-[11.5px] font-bold" style={{ background: `${robot.accent}1a`, color: robot.accent }}>
@@ -68,15 +62,15 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
             </span>
           </div>
 
-          <h3 className="mt-5 font-display text-[30px] leading-tight text-fog">{robot.name}</h3>
+          <h3 className="mt-5 font-display text-[30px] leading-tight text-fog">{t(`svc.${robot.id}.t`, robot.name)}</h3>
           <p className="text-[13px] font-semibold" style={{ color: robot.accent }}>
-            {robot.role}
+            {t(`svc.${robot.id}.role`, robot.role)}
           </p>
-          <p className="mt-3 text-[13.5px] leading-7 text-mist">{robot.desc}</p>
+          <p className="mt-3 text-[13.5px] leading-7 text-mist">{t(`svc.${robot.id}.d`, robot.desc)}</p>
 
           <div className="mt-5 space-y-2 border-t border-white/8 pt-5">
             <div className="flex items-center justify-between text-[12.5px]">
-              <span className="text-mist">نرخ موفقیت ۹۰ روزه</span>
+              <span className="text-mist">{t("svc.winRate", "نرخ موفقیت ۹۰ روزه")}</span>
               <span className="font-extrabold tabular-nums" style={{ color: robot.accent }}>
                 ٪{robot.winRate}
               </span>
@@ -86,11 +80,11 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
 
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[12.5px]">
             <div>
-              <dt className="text-mist">سیگنال روزانه</dt>
+              <dt className="text-mist">{t("svc.daily", "سیگنال روزانه")}</dt>
               <dd className="mt-0.5 font-bold text-fog">{robot.daily}</dd>
             </div>
             <div>
-              <dt className="text-mist">پوشش بازار</dt>
+              <dt className="text-mist">{t("svc.coverage", "پوشش بازار")}</dt>
               <dd className="mt-0.5 font-bold text-fog">{robot.timeframe}</dd>
             </div>
           </dl>
@@ -101,20 +95,22 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
                 {m}
               </span>
             ))}
-            <span className="mr-auto text-[11.5px] text-mist/80">آخرین سیگنال: {robot.lastSignal}</span>
+            <span className="mr-auto text-[11.5px] text-mist/80">
+              {t("svc.lastSignal", "آخرین سیگنال")}: {robot.lastSignal}
+            </span>
           </div>
 
           <div className="mt-5 flex items-center justify-between rounded-2xl border border-white/12 bg-abyss/45 px-4 py-3">
             <div>
-              <p className="text-[11px] text-mist">اشتراک ماهانه</p>
+              <p className="text-[11px] text-mist">{t("svc.monthly", "اشتراک ماهانه")}</p>
               <p className="font-display text-[24px] leading-tight text-fog">
                 {robot.priceLabel}
-                <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">تومان</span>
+                <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">{t("svc.toman", "تومان")}</span>
               </p>
             </div>
             <button
               onClick={() => addToCart(productFromRobot(robot))}
-              aria-label={`افزودن ${robot.name} به سبد خرید`}
+              aria-label={`${t("svc.addToCart", "افزودن به سبد خرید")} — ${robot.name}`}
               className="flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
               style={{ color: robot.accent, background: `${robot.accent}16`, border: `1px solid ${robot.accent}59` }}
             >
@@ -123,9 +119,9 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
           </div>
           <button
             onClick={() => openPurchase(productFromRobot(robot))}
-            className="shine mt-3 w-full rounded-xl bg-fog py-3 text-[14px] font-extrabold text-ink shadow-[0_12px_35px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
+            className="shine mt-3 w-full rounded-xl bg-paper py-3 text-[14px] font-extrabold text-ink shadow-[0_12px_35px_-12px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 active:scale-[0.97]"
           >
-            خرید اشتراک {robot.name}
+            {t("svc.buy", "خرید اشتراک")} {t(`svc.${robot.id}.t`, robot.name)}
           </button>
         </div>
       </div>
@@ -172,6 +168,7 @@ function TileIcon({ icon, className = "h-6 w-6" }: { icon: string; className?: s
 type FeedItem = { id: number; robot: string; side: Side; pair: string; price: string; time: string };
 
 function SignalRow({ item, isNew }: { item: FeedItem; isNew: boolean }) {
+  const { t } = useI18n();
   const buy = item.side === "buy";
   return (
     <li className={`flex items-center justify-between gap-3 rounded-xl border border-white/7 bg-white/3 px-4 py-3 ${isNew ? "rise" : ""}`}>
@@ -180,11 +177,11 @@ function SignalRow({ item, isNew }: { item: FeedItem; isNew: boolean }) {
         <div className="min-w-0">
           <p className="truncate text-[13px] font-bold text-fog">
             <span className="text-mist">{item.robot}</span>{" "}
-            <span className={buy ? "text-mint" : "text-down"}>{buy ? "خرید" : "فروش"}</span>{" "}
+            <span className={buy ? "text-mint" : "text-down"}>{buy ? t("svc.buySide", "خرید") : t("svc.sellSide", "فروش")}</span>{" "}
             <bdo dir="ltr">{item.pair}</bdo>
           </p>
           <p className="text-[11.5px] tabular-nums text-mist">
-            در قیمت <bdo dir="ltr">{item.price}</bdo> • {item.time}
+            {t("svc.at", "در قیمت")} <bdo dir="ltr">{item.price}</bdo> • {item.time}
           </p>
         </div>
       </div>
@@ -197,6 +194,7 @@ function SignalRow({ item, isNew }: { item: FeedItem; isNew: boolean }) {
 
 export default function Services() {
   const reduced = usePrefersReducedMotion();
+  const { t } = useI18n();
   const [feed, setFeed] = useState<FeedItem[]>(() =>
     SIGNAL_POOL.slice(0, 5).map((s, i) => ({ id: i, ...s, time: faTime(new Date(Date.now() - (i + 2) * 150000)) }))
   );
@@ -214,9 +212,19 @@ export default function Services() {
 
   return (
     <section id="services" className="relative scroll-mt-24 py-20 lg:py-28">
-      <div className="pointer-events-none absolute top-10 right-[8%] h-[520px] w-[520px] rounded-full bg-pine/14 blur-[160px]" />
+      <div className="pointer-events-none absolute right-[8%] top-10 h-[520px] w-[520px] rounded-full bg-dusk/40 blur-[160px]" />
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHead kicker={SERVICES_INTRO.kicker} title={[<>محصولات</>, <><span className="text-mint">ایران افیکس</span></>]} desc={SERVICES_INTRO.desc} />
+        <SectionHead
+          kicker={t("svc.kicker", "خدمات تخصصی")}
+          title={[
+            <>{t("svc.title", "محصولات ایران افیکس").split(" ")[0]}</>,
+            <span className="text-mint">{t("svc.title", "محصولات ایران افیکس").split(" ").slice(1).join(" ")}</span>,
+          ]}
+          desc={t(
+            "svc.desc",
+            "در ادامه، با خدمات اصلی ایران افیکس آشنا شوید. هر محصول با استانداردهای جهانی طراحی شده و دقت بالایی دارد."
+          )}
+        />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
           {ROBOTS.map((r, i) => (
@@ -224,33 +232,34 @@ export default function Services() {
           ))}
         </div>
 
-        {/* سایر خدمات */}
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
-          {SERVICE_TILES.map((t, i) => (
-            <Reveal key={t.id} delay={i * 100} className={t.wide ? "lg:col-span-3" : ""}>
+          {SERVICE_TILES.map((tile, i) => (
+            <Reveal key={tile.id} delay={i * 100} className={tile.wide ? "lg:col-span-3" : ""}>
               <article
                 className={`group glass relative h-full overflow-hidden rounded-[22px] p-7 transition-all duration-500 hover:-translate-y-1.5 ${
-                  t.wide ? "lg:flex lg:items-center lg:justify-between lg:gap-10" : ""
+                  tile.wide ? "lg:flex lg:items-center lg:justify-between lg:gap-10" : ""
                 }`}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${t.accent}55`)}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${tile.accent}55`)}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
               >
-                {t.wide && <div className="bg-girih pointer-events-none absolute inset-0 opacity-[0.05]" />}
+                {tile.wide && <div className="bg-girih pointer-events-none absolute inset-0 opacity-[0.05]" />}
                 <div className="relative flex items-start gap-5">
                   <span
                     className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
-                    style={{ background: `${t.accent}16`, color: t.accent, border: `1px solid ${t.accent}3d` }}
+                    style={{ background: `${tile.accent}16`, color: tile.accent, border: `1px solid ${tile.accent}3d` }}
                   >
-                    <TileIcon icon={t.icon} />
+                    <TileIcon icon={tile.icon} />
                   </span>
                   <div>
-                    <h3 className="font-display text-[23px] text-fog">{t.title}</h3>
-                    <p className={`mt-2.5 text-[13.5px] leading-7 text-mist ${t.wide ? "lg:max-w-2xl" : ""}`}>{t.desc}</p>
+                    <h3 className="font-display text-[23px] text-fog">{t(`svc.${tile.id}.t`, tile.title)}</h3>
+                    <p className={`mt-2.5 text-[13.5px] leading-7 text-mist ${tile.wide ? "lg:max-w-2xl" : ""}`}>
+                      {t(`svc.${tile.id}.d`, tile.desc)}
+                    </p>
                   </div>
                 </div>
-                {t.wide && (
+                {tile.wide && (
                   <div className="relative mt-6 flex shrink-0 flex-wrap gap-2.5 lg:mt-0">
-                    {["امنیت بانکی", "اجرای سریع سفارش", "آپ‌تایم ۹۹٫۹٪"].map((b) => (
+                    {[t("svc.b1", "امنیت بانکی"), t("svc.b2", "اجرای سریع سفارش"), t("svc.b3", "آپ‌تایم ۹۹٫۹٪")].map((b) => (
                       <span key={b} className="rounded-full border border-mint/30 bg-mint/8 px-4 py-2 text-[12px] font-bold text-mint">
                         {b}
                       </span>
@@ -262,16 +271,15 @@ export default function Services() {
           ))}
         </div>
 
-        {/* جریان زنده سیگنال‌ها */}
         <Reveal delay={150} className="mt-10">
           <div className="glass-deep overflow-hidden rounded-[22px]">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/8 px-6 py-4">
               <span className="flex items-center gap-2.5 text-[14.5px] font-extrabold text-fog">
                 <span className="live-dot h-2.5 w-2.5 rounded-full bg-mint" />
-                جریان زنده سیگنال‌ها
+                {t("svc.feedTitle", "جریان زنده سیگنال‌ها")}
               </span>
               <span className="rounded-full border border-mint/25 bg-mint/8 px-3 py-1 text-[11.5px] font-bold text-mint">
-                به‌روزرسانی خودکار هر چند ثانیه
+                {t("svc.feedAuto", "به‌روزرسانی خودکار هر چند ثانیه")}
               </span>
             </div>
             <ul className="grid gap-2.5 p-4 sm:p-6 lg:grid-cols-2 lg:gap-3">

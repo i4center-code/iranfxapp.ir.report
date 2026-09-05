@@ -1,5 +1,6 @@
-import { WHY_INTRO, WHY_ITEMS } from "../lib/data";
+import { WHY_ITEMS } from "../lib/data";
 import { faNum } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 import { Reveal, useCountUp, useInView } from "../lib/motion";
 import { IconArrowLeft } from "./icons";
 
@@ -42,72 +43,65 @@ function WhyIcon({ id, className = "h-6 w-6" }: { id: string; className?: string
           <path d="M6 21V4m0 0h11.5l-2.4 3.5L17.5 11H6" />
         </svg>
       );
-    case "platform":
+    default:
       return (
         <svg viewBox="0 0 24 24" className={className} {...S}>
           <path d="m12 3.5 8.5 4.5L12 12.5 3.5 8 12 3.5Z" />
           <path d="m4.5 12.5 7.5 4 7.5-4M4.5 16.5l7.5 4 7.5-4" opacity="0.7" />
         </svg>
       );
-    default:
-      return (
-        <svg viewBox="0 0 24 24" className={className} {...S}>
-          <path d="m8 8-4.5 4L8 16M16 8l4.5 4L16 16" />
-          <path d="M13.5 5.5 10.5 18.5" />
-        </svg>
-      );
   }
 }
 
 function FoundingStat() {
+  const { t } = useI18n();
   const [ref, inView] = useInView<HTMLDivElement>();
   const n = useCountUp(1399, inView);
   return (
     <div ref={ref} className="mt-8 flex items-center gap-6 rounded-2xl border border-white/10 bg-abyss/50 p-5">
       <span className="font-display text-[46px] leading-none text-mint">{faNum(n)}</span>
       <span className="text-[13px] leading-6 text-mist">
-        سال تأسیس؛
+        {t("why.year", "سال تأسیس")}
         <br />
-        <b className="text-fog">۵+ سال تجربه</b> در کنار معامله‌گران ایرانی
+        <b className="text-fog">۵+ {t("why.yearNote", "سال تجربه در کنار معامله‌گران ایرانی")}</b>
       </span>
     </div>
   );
 }
 
 export default function Why() {
+  const { t } = useI18n();
   return (
     <section id="why" className="relative scroll-mt-24 py-20 lg:py-28">
-      <div className="pointer-events-none absolute top-24 left-[8%] h-[480px] w-[480px] rounded-full bg-pine/14 blur-[150px]" />
+      <div className="pointer-events-none absolute left-[8%] top-24 h-[480px] w-[480px] rounded-full bg-dusk/35 blur-[150px]" />
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-12">
-          {/* پنل معرفی */}
           <Reveal className="lg:col-span-5 lg:row-span-2">
             <div className="glass-deep relative flex h-full flex-col overflow-hidden rounded-[26px] p-8 lg:p-10">
               <div className="bg-girih pointer-events-none absolute inset-0 opacity-[0.06]" />
               <div className="relative">
                 <span className="inline-flex items-center gap-2 rounded-full border border-mint/25 bg-mint/8 px-4 py-1.5 text-[13px] font-bold text-mint">
                   <span className="live-dot h-1.5 w-1.5 rounded-full bg-mint" />
-                  {WHY_INTRO.kicker}
+                  {t("why.kicker", "انتخاب هوشمند")}
                 </span>
-                <h2 className="mt-6 font-display text-[36px] leading-[1.25] text-fog sm:text-[44px]">
-                  {WHY_INTRO.title}
+                <h2 className="mt-6 font-display text-[34px] leading-[1.3] text-fog sm:text-[40px] lg:text-[44px]">
+                  {t("why.title", "چرا ایران افیکس را انتخاب کنید؟")}
                 </h2>
-                <p className="mt-5 text-[14.5px] leading-8 text-mist">{WHY_INTRO.desc}</p>
+                <p className="mt-5 text-[14px] leading-8 text-mist sm:text-[14.5px]">
+                  {t(
+                    "why.desc",
+                    "با تجربه‌ای غنی در بازارهای مالی جهانی، ما مأموریتی روشن داریم: دموکراتیک کردن دسترسی به ابزارهای حرفه‌ای معاملاتی برای همه معامله‌گران ایرانی."
+                  )}
+                </p>
                 <FoundingStat />
               </div>
             </div>
           </Reveal>
 
-          {/* کاشی‌ها */}
           {WHY_ITEMS.map((item, i) => (
-            <Reveal
-              key={item.id}
-              delay={i * 90}
-              className={i < 2 ? "lg:col-span-7" : "lg:col-span-4"}
-            >
+            <Reveal key={item.id} delay={i * 90} className={i < 2 ? "lg:col-span-7" : "lg:col-span-4"}>
               <article
                 className="group glass relative h-full overflow-hidden rounded-[22px] p-7 transition-all duration-500 hover:-translate-y-1.5"
-                style={{ borderColor: "rgba(255,255,255,0.09)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${item.accent}55`)}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
               >
@@ -115,7 +109,7 @@ export default function Why() {
                   className="pointer-events-none absolute -top-16 left-[-10%] h-36 w-36 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-25"
                   style={{ background: item.accent }}
                 />
-                <div>
+                <div className="relative">
                   <div className="flex items-center gap-4">
                     <span
                       className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl p-3 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
@@ -123,15 +117,15 @@ export default function Why() {
                     >
                       <WhyIcon id={item.id} className="h-6 w-6" />
                     </span>
-                    <h3 className="font-display text-[23px] text-fog">{item.title}</h3>
+                    <h3 className="font-display text-[23px] text-fog">{t(`why.${item.id}.t`, item.title)}</h3>
                   </div>
-                  <p className="mt-4 text-[13.5px] leading-7 text-mist">{item.desc}</p>
+                  <p className="mt-4 text-[13.5px] leading-7 text-mist">{t(`why.${item.id}.d`, item.desc)}</p>
                   <a
                     href="#"
                     className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold transition-colors duration-300 hover:opacity-80"
                     style={{ color: item.accent }}
                   >
-                    بیشتر بدانید
+                    {t("why.more", "بیشتر بدانید")}
                     <IconArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
                   </a>
                 </div>

@@ -13,6 +13,7 @@ import Ticker from "./components/Ticker";
 import Why from "./components/Why";
 import { IconUp } from "./components/icons";
 import { CartProvider } from "./lib/cart";
+import { I18nProvider } from "./lib/i18n";
 
 function BackToTop() {
   const [show, setShow] = useState(false);
@@ -25,7 +26,7 @@ function BackToTop() {
     <a
       href="#top"
       aria-label="بازگشت به بالا"
-      className={`fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-fog text-ink shadow-[0_12px_35px_-8px_rgba(0,0,0,0.45)] transition-all duration-500 hover:-translate-y-1 hover:brightness-95 ${
+      className={`fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-paper text-ink shadow-[0_12px_35px_-8px_rgba(0,0,0,0.45)] transition-all duration-500 hover:-translate-y-1 hover:brightness-95 ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
       }`}
     >
@@ -36,6 +37,7 @@ function BackToTop() {
 
 export default function App() {
   return (
+    <I18nProvider>
     <CartProvider>
       <div className="relative min-h-screen overflow-x-clip bg-ink text-fog">
         {/* پس‌زمینه محیطی لایه‌لایه — سورمه‌ای عمیق با هاله‌های نوری گسترده */}
@@ -68,5 +70,6 @@ export default function App() {
         </div>
       </div>
     </CartProvider>
+    </I18nProvider>
   );
 }

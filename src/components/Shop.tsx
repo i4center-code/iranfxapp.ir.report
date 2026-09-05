@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useCart } from "../lib/cart";
 import { COURSES, ROBOTS, type Product } from "../lib/data";
 import { faNum } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 import { Pattern } from "./Courses";
 import {
   IconBolt,
@@ -17,19 +18,18 @@ import {
 } from "./icons";
 
 const ROBOT_AVATARS: Record<string, (p: { className?: string }) => React.ReactElement> = {
-  "robot-orobat": RobotOrobat,
   "robot-microbot": RobotMicrobot,
+  "robot-orobat": RobotOrobat,
   "robot-yuz": RobotYuz,
 };
+
+const CRYPTO_ADDR = "TXk3fQz8vB2mR7yN5dC9wA4eH6jL1sP0uG";
 
 function ProductArt({ p }: { p: Product }) {
   if (p.kind === "robot") {
     const Avatar = ROBOT_AVATARS[p.id];
     return (
-      <span
-        className="flex h-20 w-20 items-center justify-center rounded-3xl"
-        style={{ background: `${p.accent}16`, border: `1px solid ${p.accent}44` }}
-      >
+      <span className="flex h-20 w-20 items-center justify-center rounded-3xl" style={{ background: `${p.accent}16`, border: `1px solid ${p.accent}44` }}>
         {Avatar ? <Avatar className="h-14 w-14" /> : <IconBolt className="h-8 w-8" />}
       </span>
     );
@@ -37,10 +37,7 @@ function ProductArt({ p }: { p: Product }) {
   if (p.kind === "course") {
     const course = COURSES.find((c) => `course-${c.id}` === p.id);
     return (
-      <span
-        className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl"
-        style={{ background: `${p.accent}14`, border: `1px solid ${p.accent}40` }}
-      >
+      <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl" style={{ background: `${p.accent}14`, border: `1px solid ${p.accent}40` }}>
         {course ? (
           <span className="block h-12 w-16">
             <Pattern kind={course.pattern} color={p.accent} />
@@ -52,15 +49,8 @@ function ProductArt({ p }: { p: Product }) {
     );
   }
   return (
-    <span
-      className="flex h-20 w-20 items-center justify-center rounded-3xl"
-      style={{ background: `${p.accent}16`, border: `1px solid ${p.accent}44` }}
-    >
-      {p.id === "plan-lifetime" ? (
-        <IconShield className="h-9 w-9 text-gold" />
-      ) : (
-        <IconBolt className="h-9 w-9 text-mint" />
-      )}
+    <span className="flex h-20 w-20 items-center justify-center rounded-3xl" style={{ background: `${p.accent}16`, border: `1px solid ${p.accent}44` }}>
+      {p.id === "plan-lifetime" ? <IconShield className="h-9 w-9 text-gold" /> : <IconBolt className="h-9 w-9 text-mint" />}
     </span>
   );
 }
@@ -68,6 +58,7 @@ function ProductArt({ p }: { p: Product }) {
 /* ---------- پنل خرید محصول ---------- */
 function PurchaseDrawer() {
   const { purchase: p, closePurchase, addToCart, openCart } = useCart();
+  const { t } = useI18n();
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -88,28 +79,22 @@ function PurchaseDrawer() {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label={`خرید ${p.name}`}
+        aria-label={`${t("shop.addToCart", "خرید")} — ${p.name}`}
         className="drawer-panel glass-deep fixed inset-y-0 left-0 z-[80] flex w-full max-w-[440px] flex-col border-l-0 border-r border-white/10"
       >
         <div className="relative overflow-hidden border-b border-white/8 px-7 py-6">
-          <div
-            className="pointer-events-none absolute -top-16 left-1/2 h-36 w-72 -translate-x-1/2 rounded-full blur-3xl opacity-25"
-            style={{ background: p.accent }}
-          />
+          <div className="pointer-events-none absolute -top-16 left-1/2 h-36 w-72 -translate-x-1/2 rounded-full opacity-25 blur-3xl" style={{ background: p.accent }} />
           <div className="relative flex items-center gap-4">
             <ProductArt p={p} />
             <div className="min-w-0">
-              <span
-                className="rounded-full px-2.5 py-0.5 text-[11px] font-bold"
-                style={{ background: `${p.accent}1a`, color: p.accent }}
-              >
+              <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: `${p.accent}1a`, color: p.accent }}>
                 {p.kindLabel}
               </span>
               <h3 className="mt-1.5 truncate font-display text-[26px] leading-tight text-fog">{p.name}</h3>
             </div>
             <button
               onClick={closePurchase}
-              aria-label="بستن پنل خرید"
+              aria-label="بستن"
               className="mr-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/4 text-mist transition-all hover:rotate-90 hover:border-down/50 hover:text-down"
             >
               <IconClose className="h-4.5 w-4.5" />
@@ -131,15 +116,12 @@ function PurchaseDrawer() {
 
           <h4 className="mt-6 flex items-center gap-2 text-[13.5px] font-extrabold text-fog">
             <span className="h-4 w-1 rounded-full" style={{ background: p.accent }} />
-            چه چیزهایی دریافت می‌کنید؟
+            {t("shop.receive", "چه چیزهایی دریافت می‌کنید؟")}
           </h4>
           <ul className="mt-3.5 space-y-3">
             {p.features.map((f) => (
               <li key={f} className="flex items-start gap-3 text-[13.5px] leading-6 text-fog/85">
-                <span
-                  className="mt-0.5 flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full"
-                  style={{ background: `${p.accent}1a`, color: p.accent }}
-                >
+                <span className="mt-0.5 flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full" style={{ background: `${p.accent}1a`, color: p.accent }}>
                   <IconCheck className="h-3 w-3" />
                 </span>
                 {f}
@@ -151,9 +133,11 @@ function PurchaseDrawer() {
         <div className="border-t border-white/8 bg-abyss/50 px-7 py-5">
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-[12px] text-mist">قیمت</p>
+              <p className="text-[12px] text-mist">{t("shop.price", "قیمت")}</p>
               <p className="font-display text-[34px] leading-none text-fog">
-                {p.priceNum === 0 ? p.priceLabel : (
+                {p.priceNum === 0 ? (
+                  p.priceLabel
+                ) : (
                   <>
                     {p.priceLabel}
                     <span className="mr-2 font-body text-[13px] font-bold text-mist">{p.unit}</span>
@@ -163,25 +147,25 @@ function PurchaseDrawer() {
             </div>
             <span className="mb-1 flex items-center gap-1.5 rounded-full bg-mint/10 px-3 py-1 text-[11px] font-bold text-mint">
               <IconShield className="h-3.5 w-3.5" />
-              ضمانت بازگشت وجه
+              {t("shop.guarantee", "ضمانت بازگشت وجه")}
             </span>
           </div>
           <div className="mt-4 flex gap-3">
             <button
               onClick={onAdd}
               className={`shine flex flex-1 items-center justify-center gap-2.5 rounded-xl py-3.5 text-[15px] font-extrabold transition-all duration-300 active:scale-[0.97] ${
-                added ? "bg-pine text-fog" : "bg-fog text-ink shadow-[0_12px_35px_-10px_rgba(255,255,255,0.5)] hover:brightness-95"
+                added ? "bg-pine text-fog" : "bg-paper text-ink shadow-[0_12px_35px_-10px_rgba(255,255,255,0.5)] hover:brightness-95"
               }`}
             >
               {added ? (
                 <>
                   <IconCheck className="h-5 w-5" />
-                  به سبد اضافه شد
+                  {t("shop.added", "به سبد اضافه شد")}
                 </>
               ) : (
                 <>
                   <IconCart className="h-5 w-5" />
-                  افزودن به سبد خرید
+                  {t("shop.addToCart", "افزودن به سبد خرید")}
                 </>
               )}
             </button>
@@ -192,19 +176,39 @@ function PurchaseDrawer() {
               }}
               className="rounded-xl border border-white/15 px-5 py-3.5 text-[13.5px] font-bold text-mist transition-all duration-300 hover:border-mint/60 hover:text-mint"
             >
-              مشاهده سبد
+              {t("shop.viewCart", "مشاهده سبد")}
             </button>
           </div>
+          <p className="mt-3 text-center text-[11px] text-mist/80">{t("shop.payments", "پرداخت ریالی • رمزارز برای کاربران بین‌المللی")}</p>
         </div>
       </aside>
     </>
   );
 }
 
-/* ---------- سبد خرید ---------- */
+/* ---------- سبد خرید با انتخاب روش پرداخت ---------- */
 function CartDrawer() {
   const { cartOpen, closeCart, lines, total, removeLine, notify } = useCart();
+  const { t } = useI18n();
+  const [method, setMethod] = useState<"rial" | "crypto">("rial");
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (cartOpen) setCopied(false);
+  }, [cartOpen]);
+
   if (!cartOpen) return null;
+
+  const copyAddr = async () => {
+    try {
+      await navigator.clipboard.writeText(CRYPTO_ADDR);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    }
+  };
 
   return (
     <>
@@ -212,22 +216,20 @@ function CartDrawer() {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label="سبد خرید"
-        className="drawer-panel glass-deep fixed inset-y-0 left-0 z-[80] flex w-full max-w-[420px] flex-col border-l-0 border-r border-white/10"
+        aria-label={t("shop.cartTitle", "سبد خرید")}
+        className="drawer-panel glass-deep fixed inset-y-0 left-0 z-[80] flex w-full max-w-[430px] flex-col border-l-0 border-r border-white/10"
       >
         <div className="flex items-center justify-between border-b border-white/8 px-7 py-6">
           <h3 className="flex items-center gap-3 font-display text-[26px] text-fog">
             <IconCart className="h-6 w-6 text-mint" />
-            سبد خرید
+            {t("shop.cartTitle", "سبد خرید")}
             {lines.length > 0 && (
-              <span className="rounded-full bg-mint px-2.5 py-0.5 font-body text-[12px] font-extrabold text-abyss">
-                {faNum(lines.length)} مورد
-              </span>
+              <span className="rounded-full bg-mint px-2.5 py-0.5 font-body text-[12px] font-extrabold text-ink">{faNum(lines.length)} {t("shop.items", "مورد")}</span>
             )}
           </h3>
           <button
             onClick={closeCart}
-            aria-label="بستن سبد خرید"
+            aria-label="بستن"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/4 text-mist transition-all hover:rotate-90 hover:border-down/50 hover:text-down"
           >
             <IconClose className="h-4.5 w-4.5" />
@@ -240,35 +242,21 @@ function CartDrawer() {
               <span className="flex h-20 w-20 items-center justify-center rounded-full border border-dashed border-white/20 text-mist">
                 <IconCart className="h-9 w-9" />
               </span>
-              <p className="font-display text-[22px] text-fog">سبد خرید شما خالی است</p>
-              <p className="max-w-[240px] text-[13px] leading-6 text-mist">
-                ربات‌ها و دوره‌های موردعلاقه‌تان را اضافه کنید تا اینجا منتظرتان باشند.
-              </p>
+              <p className="font-display text-[22px] text-fog">{t("shop.empty", "سبد خرید شما خالی است")}</p>
+              <p className="max-w-[240px] text-[13px] leading-6 text-mist">{t("shop.emptyDesc", "ربات‌ها و دوره‌های موردعلاقه‌تان را اضافه کنید.")}</p>
               <button
                 onClick={closeCart}
-                className="mt-2 rounded-full bg-mint px-6 py-2.5 text-[13.5px] font-extrabold text-abyss transition-transform hover:scale-105 active:scale-95"
+                className="mt-2 rounded-full bg-mint px-6 py-2.5 text-[13.5px] font-extrabold text-ink transition-transform hover:scale-105 active:scale-95"
               >
-                مشاهده محصولات
+                {t("shop.viewProducts", "مشاهده محصولات")}
               </button>
             </div>
           ) : (
             <ul className="space-y-3">
               {lines.map((l) => (
-                <li
-                  key={l.id}
-                  className="rise flex items-center gap-3.5 rounded-2xl border border-white/8 bg-white/3 p-4"
-                >
-                  <span
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-                    style={{ background: `${l.accent}16`, border: `1px solid ${l.accent}3d` }}
-                  >
-                    {l.id.startsWith("robot") ? (
-                      <IconBolt className="h-5 w-5" />
-                    ) : l.id.startsWith("course") ? (
-                      <IconBook className="h-5 w-5" />
-                    ) : (
-                      <IconShield className="h-5 w-5" />
-                    )}
+                <li key={l.id} className="rise flex items-center gap-3.5 rounded-2xl border border-white/8 bg-white/3 p-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style={{ background: `${l.accent}16`, border: `1px solid ${l.accent}3d` }}>
+                    {l.id.startsWith("robot") ? <IconBolt className="h-5 w-5" /> : l.id.startsWith("course") ? <IconBook className="h-5 w-5" /> : <IconShield className="h-5 w-5" />}
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[14px] font-extrabold text-fog">{l.name}</p>
@@ -276,13 +264,13 @@ function CartDrawer() {
                   </div>
                   <div className="text-left">
                     <p className="text-[13.5px] font-extrabold tabular-nums text-fog" dir="ltr">
-                      {l.priceNum === 0 ? l.priceLabel : l.priceLabel}
+                      {l.priceLabel}
                     </p>
-                    {l.priceNum > 0 && <p className="text-[10.5px] text-mist">تومان</p>}
+                    {l.priceNum > 0 && <p className="text-[10.5px] text-mist">{t("svc.toman", "تومان")}</p>}
                   </div>
                   <button
                     onClick={() => removeLine(l.id)}
-                    aria-label={`حذف ${l.name}`}
+                    aria-label={`${t("shop.remove", "حذف")} ${l.name}`}
                     className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-mist transition-all duration-300 hover:bg-down/12 hover:text-down"
                   >
                     <IconTrash className="h-4 w-4" />
@@ -296,20 +284,67 @@ function CartDrawer() {
         {lines.length > 0 && (
           <div className="border-t border-white/8 bg-abyss/50 px-7 py-5">
             <div className="flex items-center justify-between">
-              <span className="text-[13.5px] text-mist">جمع سبد خرید</span>
+              <span className="text-[13.5px] text-mist">{t("shop.total", "جمع سبد خرید")}</span>
               <span className="font-display text-[26px] text-fog">
                 {faNum(total)}
-                <span className="mr-1.5 font-body text-[12px] font-bold text-mist">تومان</span>
+                <span className="mr-1.5 font-body text-[12px] font-bold text-mist">{t("svc.toman", "تومان")}</span>
               </span>
             </div>
+
+            {/* انتخاب روش پرداخت */}
+            <p className="mt-4 text-[12px] font-bold text-mist">{t("shop.payMethod", "روش پرداخت")}</p>
+            <div className="mt-2 grid grid-cols-2 gap-2.5">
+              <button
+                onClick={() => setMethod("rial")}
+                className={`rounded-xl border px-3 py-3 text-right transition-all duration-300 ${
+                  method === "rial" ? "border-mint/60 bg-mint/10" : "border-white/10 bg-white/3 hover:border-white/25"
+                }`}
+              >
+                <span className={`block text-[13.5px] font-extrabold ${method === "rial" ? "text-mint" : "text-fog"}`}>{t("shop.gwRial", "درگاه ریالی")}</span>
+                <span className="mt-0.5 block text-[10.5px] text-mist">{t("shop.gwRialSub", "پی‌پینگ • ایران")}</span>
+              </button>
+              <button
+                onClick={() => setMethod("crypto")}
+                className={`rounded-xl border px-3 py-3 text-right transition-all duration-300 ${
+                  method === "crypto" ? "border-gold/60 bg-gold/10" : "border-white/10 bg-white/3 hover:border-white/25"
+                }`}
+              >
+                <span className={`block text-[13.5px] font-extrabold ${method === "crypto" ? "text-gold" : "text-fog"}`}>{t("shop.gwCrypto", "رمزارز")}</span>
+                <span className="mt-0.5 block text-[10.5px] text-mist">{t("shop.gwCryptoSub", "USDT • بین‌المللی")}</span>
+              </button>
+            </div>
+
+            {method === "crypto" && (
+              <div className="rise mt-3 rounded-xl border border-gold/30 bg-gold/6 p-3.5">
+                <p className="text-[11px] leading-5 text-gold">{t("shop.cryptoNote", "مناسب کاربران خارج از ایران؛ پرداخت با تتر (TRC-20)، تون‌کوین یا بیت‌کوین.")}</p>
+                <p className="mt-2.5 text-[10.5px] font-bold text-mist">{t("shop.cryptoAddr", "آدرس کیف پول USDT (TRC-20)")}</p>
+                <div className="mt-1.5 flex items-center gap-2">
+                  <code className="flex-1 truncate rounded-lg border border-white/10 bg-abyss/70 px-3 py-2 text-[11px] tabular-nums text-fog" dir="ltr">
+                    {CRYPTO_ADDR}
+                  </code>
+                  <button
+                    onClick={copyAddr}
+                    className={`shrink-0 rounded-lg px-3 py-2 text-[11.5px] font-extrabold transition-all duration-300 active:scale-95 ${
+                      copied ? "bg-mint text-ink" : "bg-gold text-ink hover:brightness-110"
+                    }`}
+                  >
+                    {copied ? t("shop.copied", "کپی شد ✓") : t("shop.copy", "کپی آدرس")}
+                  </button>
+                </div>
+                <p className="mt-2 text-[10.5px] text-mist/85">{t("shop.cryptoConfirm", "پس از واریز، رسید را در پشتیبانی ارسال کنید")}</p>
+              </div>
+            )}
+
             <button
-              onClick={() => notify("در حال اتصال به درگاه امن پی‌پینگ…")}
-              className="shine mt-4 w-full rounded-xl bg-fog py-4 text-[15.5px] font-extrabold text-ink shadow-[0_14px_40px_-10px_rgba(255,255,255,0.45)] transition-all duration-300 hover:brightness-95 active:scale-[0.97]"
+              onClick={() => notify(method === "rial" ? t("shop.toastGw", "در حال اتصال به درگاه امن پی‌پینگ…") : t("shop.toastCrypto", "سفارش شما برای پرداخت رمزارزی ثبت شد"))}
+              className={`shine mt-4 w-full rounded-xl py-4 text-[15.5px] font-extrabold text-ink shadow-[0_14px_40px_-10px_rgba(255,255,255,0.45)] transition-all duration-300 hover:brightness-95 active:scale-[0.97] ${
+                method === "rial" ? "bg-paper" : "bg-gold"
+              }`}
             >
-              تسویه حساب امن
+              {method === "rial" ? t("shop.checkout", "تسویه حساب امن") : t("shop.checkoutCrypto", "پرداخت با رمزارز")}
             </button>
             <p className="mt-3 text-center text-[11.5px] text-mist/80">
-              پرداخت از طریق درگاه امن پی‌پینگ انجام می‌شود
+              {method === "rial" ? t("shop.gwNote", "پرداخت از طریق درگاه امن پی‌پینگ انجام می‌شود") : "USDT (TRC-20) • TON • BTC"}
             </p>
           </div>
         )}
@@ -324,10 +359,7 @@ function ToastHost() {
   if (!toast) return null;
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-8 z-[90] flex justify-center px-4">
-      <div
-        key={toast.id}
-        className="rise glass-deep flex items-center gap-3 rounded-full border-mint/35 py-3 pl-6 pr-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)]"
-      >
+      <div key={toast.id} className="rise glass-deep flex items-center gap-3 rounded-full border-mint/35 py-3 pl-6 pr-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)]">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-mint/18 text-mint ring-1 ring-mint/40">
           <IconCheck className="h-4 w-4" />
         </span>

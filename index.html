@@ -1,26 +1,39 @@
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="ایران افیکس — هوشمندانه معامله کنید. پلتفرم‌های تخصصی طلا، رمزارز و فارکس به همراه ربات‌های سیگنال‌ده و آکادمی آموزشی." />
+    <meta name="description" content="ایران افیکس — هوشمندانه معامله کنید. سامانه‌های تخصصی طلا، رمزارز و فارکس به همراه ربات‌های سیگنال‌ده و آکادمی آموزشی." />
     <meta name="theme-color" content="#121323" />
     <title>ایران افیکس | هوشمندانه معامله کنید</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- فونت ایران‌سنس ایکس -->
-    <link href="https://v1.fontapi.ir/css/IRANSansX" rel="stylesheet" />
-    <!-- فونت پشتیبان -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600;700;900&family=Noto+Sans+Georgian:wght@400;600;700;900&display=swap"
       rel="stylesheet"
     />
+    <script>
+      try {
+        var t = localStorage.getItem("iranfx-theme");
+        if (t === "light") document.documentElement.dataset.theme = "light";
+        var l = localStorage.getItem("iranfx-lang");
+        if (l) {
+          document.documentElement.lang = l;
+          if (["ar", "ps", "ur"].indexOf(l) !== -1) document.documentElement.dir = "rtl";
+          else if (["tr", "tg", "ka", "hy", "en"].indexOf(l) !== -1) document.documentElement.dir = "ltr";
+        }
+      } catch (e) {}
+    </script>
     <style>
       html,
       body {
         margin: 0;
         padding: 0;
         background-color: #121323;
+      }
+      html[data-theme="light"],
+      html[data-theme="light"] body {
+        background-color: #f1f4fa;
       }
     </style>
   </head>

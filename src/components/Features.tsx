@@ -1,4 +1,5 @@
-import { FEATURE_CARDS, FEATURES_HEAD } from "../lib/data";
+import { FEATURE_CARDS } from "../lib/data";
+import { useI18n } from "../lib/i18n";
 import { Reveal, SectionHead } from "../lib/motion";
 import { IconArrowLeft } from "./icons";
 
@@ -59,12 +60,21 @@ function FeatureArt({ icon, accent }: { icon: string; accent: string }) {
 }
 
 export default function Features() {
+  const { t } = useI18n();
   const spans = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
+  const title = t("feat.title", "امکانات ویژه");
   return (
     <section id="features" className="relative scroll-mt-24 py-20 lg:py-28">
-      <div className="pointer-events-none absolute top-16 right-[10%] h-[480px] w-[480px] rounded-full bg-skyx/7 blur-[150px]" />
+      <div className="pointer-events-none absolute right-[10%] top-16 h-[480px] w-[480px] rounded-full bg-skyx/7 blur-[150px]" />
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHead kicker={FEATURES_HEAD.kicker} title={[<>امکانات</>, <><span className="text-mint">ویژه</span></>]} desc={FEATURES_HEAD.desc} />
+        <SectionHead
+          kicker={t("feat.kicker", "امکانات ویژه")}
+          title={[
+            <>{title.split(" ").slice(0, -1).join(" ") || title}</>,
+            <span className="text-mint">{title.split(" ").slice(-1)}</span>,
+          ]}
+          desc={t("feat.desc", "از کتاب‌های آموزشی تا دستیارهای معاملاتی؛ دریافت بهترین کتاب‌های آموزشی بین‌المللی و آزمون‌ها و سوالات.")}
+        />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-12">
           {FEATURE_CARDS.map((f, i) => (
@@ -85,10 +95,10 @@ export default function Features() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-display text-[24px] text-fog">{f.title}</h3>
-                    <p className="mt-2.5 text-[13.5px] leading-7 text-mist">{f.desc}</p>
+                    <h3 className="font-display text-[24px] text-fog">{t(`feat.${f.id}.t`, f.title)}</h3>
+                    <p className="mt-2.5 text-[13.5px] leading-7 text-mist">{t(`feat.${f.id}.d`, f.desc)}</p>
                     <a href="#" className="mt-3.5 inline-flex items-center gap-2 text-[13px] font-bold transition-opacity hover:opacity-75" style={{ color: f.accent }}>
-                      دسترسی از اپلیکیشن
+                      {t("feat.access", "دسترسی از اپلیکیشن")}
                       <IconArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
                     </a>
                   </div>
@@ -98,25 +108,22 @@ export default function Features() {
           ))}
         </div>
 
-        {/* بنر ایران افیکس */}
         <Reveal delay={160} className="mt-6">
           <div className="glass-deep relative overflow-hidden rounded-[22px] px-8 py-8 sm:px-10">
             <div className="bg-girih pointer-events-none absolute inset-0 opacity-[0.06]" />
             <div className="pointer-events-none absolute -left-20 -top-24 h-64 w-64 rounded-full bg-pine/25 blur-[90px]" />
             <div className="relative flex flex-wrap items-center justify-between gap-6">
               <div>
-                <h3 className="font-display text-[26px] text-fog sm:text-[30px]">
-                  بنر ایران افیکس؛ <span className="text-mint">همیشه جلوی چشم بازار</span>
-                </h3>
+                <h3 className="font-display text-[24px] text-fog sm:text-[30px]">{t("feat.bannerTitle", "بنر ایران افیکس؛ همیشه جلوی چشم بازار")}</h3>
                 <p className="mt-2 max-w-xl text-[13.5px] leading-7 text-mist">
-                  قیمت‌ها، سیگنال‌ها و تحلیل‌های ایران افیکس را در قالب بنرها و ویجت‌های زنده، همه‌جا همراه خود داشته باشید.
+                  {t("feat.bannerDesc", "قیمت‌ها، سیگنال‌ها و تحلیل‌های ایران افیکس را در قالب بنرها و ویجت‌های زنده، همه‌جا همراه خود داشته باشید.")}
                 </p>
               </div>
               <a
                 href="#why"
-                className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-mint/50 px-6 py-3 text-[14px] font-bold text-mint transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint hover:text-abyss"
+                className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-mint/50 px-6 py-3 text-[14px] font-bold text-mint transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint hover:text-ink"
               >
-                آشنایی با مجموعه
+                {t("feat.bannerCta", "آشنایی با مجموعه")}
                 <IconArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
               </a>
             </div>

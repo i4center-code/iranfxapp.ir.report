@@ -58,10 +58,66 @@
   --color-skyx: #5cb8de;
   --color-down: #e5656c;
   --color-dusk: #1d2f57;
+  --color-paper: #f3f5fb;
   --color-fog: #f3f5fb;
   --color-mist: #9aa3b8;
-  --font-display: "IRANSansX", "IRANSans", "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
-  --font-body: "IRANSansX", "IRANSans", "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+  --font-display: "IRANSansX", "IRANSans", "Noto Naskh Arabic", "Noto Sans Armenian", "Noto Sans Georgian", "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+  --font-body: "IRANSansX", "IRANSans", "Noto Naskh Arabic", "Noto Sans Armenian", "Noto Sans Georgian", "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+}
+
+/* ---------- تم روشن ---------- */
+[data-theme="light"] {
+  --color-ink: #f1f4fa;
+  --color-abyss: #ffffff;
+  --color-panel: #f6f8fd;
+  --color-line: #d9e0ee;
+  --color-pine: #12745a;
+  --color-mint: #0e8f68;
+  --color-foam: #0b7a58;
+  --color-gold: #a3741c;
+  --color-ember: #c05f26;
+  --color-skyx: #2a7ba4;
+  --color-down: #cf4750;
+  --color-dusk: #dde6f6;
+  --color-paper: #ffffff;
+  --color-fog: #17213a;
+  --color-mist: #5b6784;
+}
+
+[data-theme="light"] .glass {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.55));
+  border-color: rgba(23, 33, 58, 0.1);
+  box-shadow: 0 18px 45px -25px rgba(23, 33, 58, 0.25);
+}
+
+[data-theme="light"] .glass-deep {
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.94), rgba(246, 248, 253, 0.88));
+  border-color: rgba(23, 33, 58, 0.1);
+  box-shadow: 0 25px 60px -30px rgba(23, 33, 58, 0.3);
+}
+
+[data-theme="light"] .bg-grid {
+  background-image: linear-gradient(rgba(23, 33, 58, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 33, 58, 0.045) 1px, transparent 1px);
+}
+
+[data-theme="light"] .noise-overlay {
+  opacity: 0.028;
+}
+
+[data-theme="light"] .live-dot {
+  animation-name: pulse-ring-light;
+}
+@keyframes pulse-ring-light {
+  0% {
+    box-shadow: 0 0 0 0 rgba(14, 143, 104, 0.4);
+  }
+  75% {
+    box-shadow: 0 0 0 10px rgba(14, 143, 104, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(14, 143, 104, 0);
+  }
 }
 
 html {
