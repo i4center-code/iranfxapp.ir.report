@@ -103,12 +103,10 @@ export default function Why() {
             <Reveal
               key={item.id}
               delay={i * 90}
-              className={i < 2 ? "lg:col-span-7" : i === WHY_ITEMS.length - 1 ? "lg:col-span-12" : "lg:col-span-4"}
+              className={i < 2 ? "lg:col-span-7" : "lg:col-span-4"}
             >
               <article
-                className={`group glass relative h-full overflow-hidden rounded-[22px] p-7 transition-all duration-500 hover:-translate-y-1.5 ${
-                  i === WHY_ITEMS.length - 1 ? "lg:flex lg:items-center lg:gap-10" : ""
-                }`}
+                className="group glass relative h-full overflow-hidden rounded-[22px] p-7 transition-all duration-500 hover:-translate-y-1.5"
                 style={{ borderColor: "rgba(255,255,255,0.09)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${item.accent}55`)}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)")}
@@ -117,7 +115,7 @@ export default function Why() {
                   className="pointer-events-none absolute -top-16 left-[-10%] h-36 w-36 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-25"
                   style={{ background: item.accent }}
                 />
-                <div className={i === WHY_ITEMS.length - 1 ? "lg:max-w-[60%]" : ""}>
+                <div>
                   <div className="flex items-center gap-4">
                     <span
                       className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl p-3 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
@@ -137,22 +135,6 @@ export default function Why() {
                     <IconArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
                   </a>
                 </div>
-                {i === WHY_ITEMS.length - 1 && (
-                  <div className="mt-6 hidden shrink-0 lg:mt-0 lg:block">
-                    <div className="glass flex items-center gap-3 rounded-2xl px-5 py-4">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-mint/12">
-                        <svg viewBox="0 0 24 24" className="h-5 w-5 text-mint" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                          <path d="M4 16.5 8.5 12l3 2.5L16 9l4 4" />
-                          <path d="M4 20h16" opacity="0.5" />
-                        </svg>
-                      </span>
-                      <span className="text-[12.5px] leading-5 text-mist">
-                        ویجت زنده قیمت‌ها
-                        <b className="block text-fog">با یک شورت‌کد، در سایت شما</b>
-                      </span>
-                    </div>
-                  </div>
-                )}
               </article>
             </Reveal>
           ))}
