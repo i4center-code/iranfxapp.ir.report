@@ -23,10 +23,23 @@ function WinBar({ value, accent, start }: { value: number; accent: string; start
   );
 }
 
+/* نگاشت بازارها و نام ربات‌ها به کلیدهای ترجمه */
+const MKT_IDS: Record<string, string> = {
+  "فارکس": "forex",
+  "رمزارز": "crypto",
+  "طلا": "gold",
+  "شاخص‌ها": "indices",
+};
+const ROBOT_IDS: Record<string, string> = {
+  "میکوبات": "microbot",
+  "اُروبات": "orobat",
+  "یوز": "yuz",
+};
+
 function RobotCard({ robot, index }: { robot: Robot; index: number }) {
   const [ref, inView] = useInView<HTMLDivElement>();
   const { addToCart, openPurchase } = useCart();
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const Avatar = AVATARS[robot.id];
   return (
     <Reveal delay={index * 120}>
@@ -58,7 +71,7 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
               </span>
             </span>
             <span className="rounded-full px-3 py-1 text-[11.5px] font-bold" style={{ background: `${robot.accent}1a`, color: robot.accent }}>
-              {robot.tag}
+              {t(`svc.${robot.id}.tag`, robot.tag)}
             </span>
           </div>
 
@@ -72,7 +85,7 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
             <div className="flex items-center justify-between text-[12.5px]">
               <span className="text-mist">{t("svc.winRate", "نرخ موفقیت ۹۰ روزه")}</span>
               <span className="font-extrabold tabular-nums" style={{ color: robot.accent }}>
-                ٪{robot.winRate}
+                {loc(`${robot.winRate}%`)}
               </span>
             </div>
             <WinBar value={robot.winRate} accent={robot.accent} start={inView} />
@@ -81,22 +94,22 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[12.5px]">
             <div>
               <dt className="text-mist">{t("svc.daily", "سیگنال روزانه")}</dt>
-              <dd className="mt-0.5 font-bold text-fog">{robot.daily}</dd>
+              <dd className="mt-0.5 font-bold text-fog">{t(`svc.${robot.id}.daily`, robot.daily)}</dd>
             </div>
             <div>
               <dt className="text-mist">{t("svc.coverage", "پوشش بازار")}</dt>
-              <dd className="mt-0.5 font-bold text-fog">{robot.timeframe}</dd>
+              <dd className="mt-0.5 font-bold text-fog">{t(`svc.${robot.id}.time`, robot.timeframe)}</dd>
             </div>
           </dl>
 
           <div className="mt-4 flex flex-wrap gap-2">
             {robot.markets.map((m) => (
               <span key={m} className="rounded-full border border-white/12 bg-white/4 px-3 py-1 text-[11.5px] font-medium text-fog/85">
-                {m}
+                {t(`svc.mkt.${MKT_IDS[m] ?? m}`, m)}
               </span>
             ))}
             <span className="mr-auto text-[11.5px] text-mist/80">
-              {t("svc.lastSignal", "آخرین سیگنال")}: {robot.lastSignal}
+              {t("svc.lastSignal", "آخرین سیگنال")}: {t(`svc.${robot.id}.last`, robot.lastSignal)}
             </span>
           </div>
 
@@ -104,7 +117,7 @@ function RobotCard({ robot, index }: { robot: Robot; index: number }) {
             <div>
               <p className="text-[11px] text-mist">{t("svc.monthly", "اشتراک ماهانه")}</p>
               <p className="font-display text-[24px] leading-tight text-fog">
-                {robot.priceLabel}
+                {loc(robot.priceLabel)}
                 <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">{t("svc.toman", "تومان")}</span>
               </p>
             </div>
@@ -168,7 +181,8 @@ function TileIcon({ icon, className = "h-6 w-6" }: { icon: string; className?: s
 type FeedItem = { id: number; robot: string; side: Side; pair: string; price: string; time: string };
 
 function SignalRow({ item, isNew }: { item: FeedItem; isNew: boolean }) {
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
+  const robotId = ROBOT_IDS[item.robot] ?? "";
   const buy = item.side === "buy";
   return (
     <li className={`flex items-center justify-between gap-3 rounded-xl border border-white/7 bg-white/3 px-4 py-3 ${isNew ? "rise" : ""}`}>
@@ -176,12 +190,12 @@ function SignalRow({ item, isNew }: { item: FeedItem; isNew: boolean }) {
         <span className={`h-2 w-2 shrink-0 rounded-full ${buy ? "bg-mint" : "bg-down"}`} />
         <div className="min-w-0">
           <p className="truncate text-[13px] font-bold text-fog">
-            <span className="text-mist">{item.robot}</span>{" "}
+            <span className="text-mist">{t(`svc.${robotId}.t`, item.robot)}</span>{" "}
             <span className={buy ? "text-mint" : "text-down"}>{buy ? t("svc.buySide", "خرید") : t("svc.sellSide", "فروش")}</span>{" "}
             <bdo dir="ltr">{item.pair}</bdo>
           </p>
           <p className="text-[11.5px] tabular-nums text-mist">
-            {t("svc.at", "در قیمت")} <bdo dir="ltr">{item.price}</bdo> • {item.time}
+            {t("svc.at", "در قیمت")} <bdo dir="ltr">{loc(item.price)}</bdo> • {loc(item.time)}
           </p>
         </div>
       </div>

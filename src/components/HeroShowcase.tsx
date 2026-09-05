@@ -146,7 +146,7 @@ function useLiveCandles(enabled: boolean) {
 
 /* ---------- موکاپ موبایل هر سامانه ---------- */
 function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[]; dir: "up" | "down"; live: boolean }) {
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const meta = META[sys.id];
   const price = candles[candles.length - 1].c;
   const change = ((price - candles[0].o) / candles[0].o) * 100;
@@ -169,7 +169,9 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
           <div className="px-3.5 pb-3.5 pt-9 sm:px-4 sm:pb-4 sm:pt-10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="font-display text-[14px] text-fog">{sys.name.replace("سامانه ", "")}</span>
+                <span className="font-display text-[14px] text-fog">
+                  {t(`hero.${sys.id}.short`, sys.name.replace("سامانه ", ""))}
+                </span>
                 <span className="rounded px-1.5 py-0.5 text-[9px] font-bold" style={{ background: `${sys.accent}1f`, color: sys.accent }}>
                   PRO
                 </span>
@@ -183,23 +185,29 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
             {/* تیکر متحرک قیمت‌ها */}
             <div className="ticker-shell mt-2.5 overflow-hidden rounded-xl border border-white/8 bg-abyss/80">
               <div className="ticker-track items-center gap-7 py-2" style={{ "--ticker-speed": "26s" } as React.CSSProperties}>
-                {[...meta.mini, ...meta.mini, ...meta.mini].map((m, i) => (
-                  <span key={i} className="flex shrink-0 items-center gap-1.5 text-[10.5px]" dir="ltr">
-                    <b className="text-fog/90">{m.p}</b>
-                    <span className="tabular-nums text-mist">{m.pr}</span>
-                    <span className={`tabular-nums font-bold ${m.ch >= 0 ? "text-mint" : "text-down"}`}>
-                      {m.ch >= 0 ? "▲" : "▼"}
-                      {toFa(Math.abs(m.ch).toFixed(2))}٪
+                {[...meta.mini, ...meta.mini, ...meta.mini].map((m, i) => {
+                  const label =
+                    sys.id === "gold" ? t(`hero.gold.m${(i % meta.mini.length) + 1}`, m.p) : m.p;
+                  return (
+                    <span key={i} className="flex shrink-0 items-center gap-1.5 text-[10.5px]" dir="ltr">
+                      <b className="text-fog/90">{label}</b>
+                      <span className="tabular-nums text-mist">{loc(m.pr)}</span>
+                      <span className={`tabular-nums font-bold ${m.ch >= 0 ? "text-mint" : "text-down"}`}>
+                        {m.ch >= 0 ? "▲" : "▼"}
+                        {loc(`${Math.abs(m.ch).toFixed(2)}%`)}
+                      </span>
                     </span>
-                  </span>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
             {/* قیمت اصلی */}
             <div className="mt-2.5 flex items-end justify-between gap-2">
               <div>
-                <p className="text-[10px] text-mist">{meta.pair}</p>
+                <p className="text-[10px] text-mist">
+                  {sys.id === "gold" ? t("hero.gold.pair", meta.pair) : meta.pair}
+                </p>
                 <p
                   key={`${Math.round(price * 10000)}`}
                   dir="ltr"
@@ -207,11 +215,11 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
                     live ? (dir === "up" ? "flash-up" : "flash-down") : ""
                   }`}
                 >
-                  {faPrice(price, meta.decimals)}
+                  {loc(faPrice(price, meta.decimals))}
                 </p>
               </div>
               <span className={`mb-1 rounded-full px-2.5 py-1 text-[11px] font-bold tabular-nums ${up ? "bg-mint/12 text-mint" : "bg-down/12 text-down"}`}>
-                {up ? "▲" : "▼"} {toFa(Math.abs(change).toFixed(2))}٪
+                {up ? "▲" : "▼"} {loc(`${Math.abs(change).toFixed(2)}%`)}
               </span>
             </div>
 
@@ -236,10 +244,12 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
                     <p className="text-[10.5px] font-bold text-fog" dir="ltr">
                       {pos.pair}
                     </p>
-                    <p className="text-[9px] text-mist">{pos.side}</p>
+                    <p className="text-[9px] text-mist">
+                      {pos.side === "خرید" ? t("svc.buySide", pos.side) : t("svc.sellSide", pos.side)}
+                    </p>
                   </div>
                   <span className={`text-[11px] font-extrabold tabular-nums ${pos.up ? "text-mint" : "text-down"}`} dir="ltr">
-                    {pos.pnl}
+                    {loc(pos.pnl)}
                   </span>
                 </div>
               ))}
@@ -264,11 +274,11 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
           <span style={{ color: sys.accent }}>
             <IconSignal className="h-3.5 w-3.5" />
           </span>
-          {meta.chipTitle}
+          {t(`hero.${sys.id}.chipT`, meta.chipTitle)}
         </p>
-        <p className="mt-1.5 text-[10.5px] leading-5 text-mist">{meta.chipBody}</p>
+        <p className="mt-1.5 text-[10.5px] leading-5 text-mist">{t(`hero.${sys.id}.chipB`, meta.chipBody)}</p>
         <span className="mt-2 inline-block rounded-full px-2.5 py-0.5 text-[9.5px] font-bold" style={{ background: `${sys.accent}1c`, color: sys.accent }}>
-          {meta.chipTag}
+          {t(`hero.${sys.id}.chipG`, meta.chipTag)}
         </span>
       </div>
     </div>
@@ -277,7 +287,7 @@ function SysPhone({ sys, candles, dir, live }: { sys: System; candles: Candle[];
 
 /* ---------- اسلاید هر سامانه ---------- */
 function SlideContent({ sys, candles, dir, live, flip }: { sys: System; candles: Candle[]; dir: "up" | "down"; live: boolean; flip: boolean }) {
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   const meta = META[sys.id];
   const price = candles[candles.length - 1].c;
   return (
@@ -323,9 +333,11 @@ function SlideContent({ sys, candles, dir, live, flip }: { sys: System; candles:
         </div>
 
         <div className="mt-5 inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 px-4 py-2.5 sm:mt-9 sm:gap-4 sm:px-5 sm:py-3.5">
-          <span className="text-[11px] text-mist sm:text-[12px]">{meta.pair}</span>
+          <span className="text-[11px] text-mist sm:text-[12px]">
+            {sys.id === "gold" ? t("hero.gold.pair", meta.pair) : meta.pair}
+          </span>
           <b className="font-display text-[19px] leading-none tabular-nums text-fog sm:text-[22px]" dir="ltr">
-            {faPrice(price, meta.decimals)}
+            {loc(faPrice(price, meta.decimals))}
           </b>
           <span className="flex items-center gap-1.5 text-[10px] font-bold text-mint sm:text-[11px]">
             <span className="live-dot h-1.5 w-1.5 rounded-full bg-mint" />
@@ -343,7 +355,7 @@ function SlideContent({ sys, candles, dir, live, flip }: { sys: System; candles:
 
 /* ---------- اسلاید معرفی ---------- */
 function IntroSlide() {
-  const { t, lang } = useI18n();
+  const { t, loc } = useI18n();
   const [statsRef, statsIn] = useInView<HTMLDivElement>();
   const traders = useCountUp(28500, statsIn);
   const signals = useCountUp(1240, statsIn);
@@ -375,8 +387,8 @@ function IntroSlide() {
         ].map((s) => (
           <div key={s.label} className="flex flex-col items-center">
             <span className="font-display text-[26px] leading-none text-fog sm:text-[38px]">
-              {["fa", "ps", "ur"].includes(lang) ? faNum(s.v) : Math.round(s.v).toLocaleString("en-US")}
-              <span className="text-mint">{["fa", "ps", "ur"].includes(lang) ? s.suffix : s.suffix === "٪" ? "%" : s.suffix}</span>
+              {loc(faNum(s.v))}
+              <span className="text-mint">{loc(s.suffix)}</span>
             </span>
             <span className="mt-2 text-[11px] font-medium text-mist sm:text-[12.5px]">{s.label}</span>
           </div>
@@ -514,7 +526,7 @@ export default function HeroShowcase() {
                 }`}
                 style={{ color: active === i ? s.accent : "#9aa3b8" }}
               >
-                {s.name.replace("سامانه ", "")}
+                {t(`hero.${s.id}.short`, s.name.replace("سامانه ", ""))}
               </span>
             </button>
           ))}

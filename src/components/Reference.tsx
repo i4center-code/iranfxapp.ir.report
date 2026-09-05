@@ -71,7 +71,7 @@ function StepIcon({ icon, className = "h-7 w-7" }: { icon: string; className?: s
 }
 
 export default function Reference() {
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   return (
     <section id="reference" className="relative scroll-mt-24 py-20 lg:py-28">
       <div className="pointer-events-none absolute left-[10%] top-40 h-[460px] w-[460px] rounded-full bg-dusk/35 blur-[150px]" />
@@ -152,10 +152,10 @@ export default function Reference() {
                     </span>
                   </div>
                   <span className="absolute -top-1 right-5 font-display text-[64px] leading-none opacity-[0.07]" aria-hidden>
-                    {faNum(i + 1)}
+                    {loc(faNum(i + 1))}
                   </span>
                   <h3 className="mt-5 font-display text-[24px] text-fog">
-                    <span className="text-mint">{faNum(i + 1)}.</span> {t(`ref.step${i + 1}.t`, s.title)}
+                    <span className="text-mint">{loc(faNum(i + 1))}.</span> {t(`ref.step${i + 1}.t`, s.title)}
                   </h3>
                   <p className="mt-2.5 text-[13.5px] leading-7 text-mist">{t(`ref.step${i + 1}.d`, s.desc)}</p>
                 </article>

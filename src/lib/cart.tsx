@@ -19,7 +19,8 @@ export type CartLine = {
   unit: string;
 };
 
-type Toast = { id: number; msg: string };
+export type ToastKind = "added" | "dup" | "gw" | "crypto";
+type Toast = { id: number; kind: ToastKind; name?: string };
 
 type CartContextValue = {
   lines: CartLine[];
@@ -34,7 +35,7 @@ type CartContextValue = {
   closePurchase: () => void;
   openCart: () => void;
   closeCart: () => void;
-  notify: (msg: string) => void;
+  notify: (kind: ToastKind) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);

@@ -59,7 +59,7 @@ export function Pattern({ kind, color }: { kind: Course["pattern"]; color: strin
 function CourseCard({ course, index }: { course: Course; index: number }) {
   const featured = course.featured;
   const { addToCart, openPurchase } = useCart();
-  const { t } = useI18n();
+  const { t, loc } = useI18n();
   return (
     <Reveal delay={(index % 3) * 110} className={featured ? "md:col-span-2" : ""}>
       <article
@@ -75,50 +75,52 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
             className="absolute right-4 top-4 rounded-full px-3 py-1 text-[11.5px] font-extrabold"
             style={{ background: `${course.levelColor}1f`, color: course.levelColor, border: `1px solid ${course.levelColor}44` }}
           >
-            {course.level}
+            {t(`course.${course.id}.lv`, course.level)}
           </span>
           {featured && (
             <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-mint px-3 py-1 text-[11px] font-extrabold text-abyss">
               <IconPlay className="h-3 w-3" />
-              پیشنهاد آکادمی
+              {t("course.featured", "پیشنهاد آکادمی")}
             </span>
           )}
         </div>
 
         <div className={`flex flex-1 flex-col p-6 ${featured ? "lg:p-8" : ""}`}>
           <h3 className={`font-display leading-snug text-fog ${featured ? "text-[30px]" : "text-[24px]"}`}>
-            {course.title}
+            {t(`course.${course.id}.t`, course.title)}
           </h3>
           {featured && (
             <p className="mt-2 text-[13.5px] leading-7 text-mist">
-              نقطه شروع مسیر یادگیری ایران افیکس؛ از مفاهیم پایه و ساختار بازار تا افتتاح اولین حساب و
-              انجام اولین معامله واقعی، قدم‌به‌قدم و به زبان ساده.
+              {t(
+                "course.c1.d",
+                "نقطه شروع مسیر یادگیری، از مفاهیم پایه و ساختار بازار تا اولین معامله واقعی، قدم‌به‌قدم و به زبان ساده."
+              )}
             </p>
           )}
           <p className="mt-2 text-[12.5px] text-mist">
-            {t("course.teacher", "مدرس")}: {course.teacher}
+            {t("course.teacher", "مدرس")}: {t(`course.${course.id}.tc`, course.teacher)}
           </p>
 
           <div className="mb-5 mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-mist">
             <span className="flex items-center gap-1.5">
               <IconBook className="h-4 w-4 text-mint" />
-              {course.sessions}
+              {t(`course.${course.id}.s`, course.sessions)}
             </span>
             <span className="flex items-center gap-1.5">
               <IconClock className="h-4 w-4 text-mint" />
-              {course.hours}
+              {t(`course.${course.id}.h`, course.hours)}
             </span>
             <span className="flex items-center gap-1.5">
               <IconStar className="h-4 w-4 text-gold" />
-              <b className="text-fog">{course.rating}</b>
+              <b className="text-fog">{t(`course.${course.id}.r`, course.rating)}</b>
             </span>
           </div>
 
           <div className="mt-auto border-t border-white/10 pt-4">
             <div className="flex items-center justify-between">
               <p className="font-display text-[25px] leading-none text-fog">
-                {course.priceLabel}
-                <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">تومان</span>
+                {loc(course.priceLabel)}
+                <span className="mr-1.5 font-body text-[11.5px] font-bold text-mist">{t("svc.toman", "تومان")}</span>
               </p>
               <button
                 onClick={() => addToCart(productFromCourse(course))}
@@ -155,7 +157,7 @@ export default function Courses() {
             <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/4">
               <IconClock className="h-6 w-6 text-mist" />
             </span>
-            <p className="font-display text-[22px] text-fog">On-Chain Analysis</p>
+            <p className="font-display text-[22px] text-fog">{t("ref.upc.t", "تحلیل آنچین رمزارزها")}</p>
             <p className="text-[12.5px] text-mist">
               {t("ref.upcoming", "دوره بعدی آکادمی")} — <b className="text-mint">{t("ref.soon", "به‌زودی")}</b>
             </p>
